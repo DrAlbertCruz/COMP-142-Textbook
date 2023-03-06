@@ -1,28 +1,169 @@
-\documentclass[letterpaper, 10pt]{book}
-\usepackage[margin=1.5in]{geometry}
+\documentclass[letterpaper, 12pt]{book}
+\usepackage[margin=1in]{geometry}
 \usepackage[acronym]{glossaries}
 \usepackage{xcolor}
 \usepackage{amsmath}
 \usepackage{multicol}
 \usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{arabxetex}
+\usepackage{xeCJK}
+\usepackage{CJKnumb}
+
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzstyle{rec} = [rectangle,minimum width=3cm, minimum height=1cm,text centered, draw=black]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+\tikzstyle{darrow} = [thick,<->,>=stealth]
 
 \makeglossaries
 \newacronym{msb}{MSB}{most significant bit}
 \newacronym{lsb}{LSB}{least significant bit}
+\newacronym{ip}{IP}{instruction pointer}
+\newacronym{risc}{RISC}{reduced instruction set computer}
+\newacronym{cisc}{CISC}{complex instruction set computer}
 \newglossaryentry{overflow}{name=overflow,description={%
     Exceeding the capacity of a binary number with fixed number of digits
 }}
 \newglossaryentry{unsigned}{name=unsigned,description={%
     A data type that allows for only positive numbers or operation that assumes the operands are positive numbers
 }}
+\newglossaryentry{von Neumann architecture}{name=von Neumann architecture,description={%
+    An electronic digital computer possessing an arithmetic logic unit, a control unit, memory, input and output
+}}
+\newglossaryentry{arithmetic logic unit}{name={arithmetic logic unit},%
+    description={The component of a microprocessor responsible for computing arithmetic},%
+    first={\glsentryname{arithmetic logic unit} (ALU)}
+}
+\newglossaryentry{register}{name={register},%
+    description={Fast temporary storage physically located on the microprocessor}
+}
+\newglossaryentry{control unit}{name={control unit},%
+    description={The component of a microprocessor that controls the operation of the microprocessor}
+}
+\newglossaryentry{instruction register}{name={instruction register},%
+    description={A register in the microprocessor that holds the value of the current instruction}
+}
+\newglossaryentry{instruction pointer}{name={instruction pointer},%
+    description={A register in the microprocessor that holds the address of the next instruction to be executed},%
+    first={\glsentryname{instruction pointer} (IP)}
+}
+\newglossaryentry{Harvard architecture}{name={Harvard architecture},%
+    description={A model for computing that differs from the von Neumann architecture by distinguishing between instruction memory and data memory}
+}
+\newglossaryentry{cache}{name={cache},%
+    description={An intermediate memory structure between the memory and the microprocessor designed to improve the speed of memory operations}
+}
+\newglossaryentry{reduced instruction set computer}{name={RISC},%
+    description={A simple microprocessor where instructions generally perform only singular actions resulting in a smaller instruction set},%
+    first={reduced instruction set computer (RISC)}
+}
+\newglossaryentry{complex instruction set computer}{name={CISC},%
+    description={A complicated type of microprocessor with a large instruction set where a single instruction may be capable of performing multiple operations at once},%
+    first={complex instruction set computer (CISC)}
+}
+\newglossaryentry{load-and-store}{name={load-and-store architecture},%
+    description={A type of architecture where memory operations are distinct from other types of operations}
+}
+\newglossaryentry{register-memory}{name={register-memory architecture},%
+    description={A type of architecture where operations can reference memory without need of additional memory operations}
+}
+\newglossaryentry{aarch64}{name={ARM64},%
+    description={The 64-bit extension of the Advanced/Acorn RISC machine (ARM) architecture family, also known as ARM64},%
+    first={Acorn RISC Machine (ARM64)}
+}
+\newglossaryentry{x64}{name={AMD64},%
+    description={The 64-bit extension of the x86-architecture, backward compatible with x86, also known as x86-64}
+}
+\newglossaryentry{x86}{name={x86},%
+    description={The 32-bit version of the x86-architecture, sometimes written as x86-32}
+}
+\newglossaryentry{isa}{name={ISA},%
+    description={Instruction set architecture. The term for a specific microprocessor design, and its set of instructions},%
+    first={instruction set architecture (ISA)}
+}
+\newglossaryentry{edvac}{name={EDVAC},%
+    description={Electronic Discrete Variable Automatic Computer, one of the earliest electronic computers},%
+    first={Electronic Discrete Variable Automatic Computer (EDVAC)}
+}
+\newglossaryentry{control of flow}{name={control of flow},%
+    description={A type of operation that causes the microprocessor to execute some other instruction, other than the next one}
+}
+\newglossaryentry{ia64}{name={IA-64},%
+    description={An instruction set architecture originally developed by HP and proposed as a 64-bit alternative to x86 by Intel},%
+    first={Itanium (IA-64)}%
+}
+\newglossaryentry{calling convention}{name={calling convention},%
+    description={A set of requirements based on the operating system and ISA defining standards for how to use the registers and stack}
+}
+\newglossaryentry{temporal locality}{name={temporal locality},%
+    description={The concept that if a value from memory is accessed it has a high probability of being accessed again}
+}
+\newglossaryentry{dram}{name={DRAM},%
+    description={Dynamic random access memory, a simple type of memory technology that has difficulties with random access},%
+    first={dynamic random access memory (DRAM)}%
+}
+\newglossaryentry{sram}{name={SRAM},%
+    description={Static random access memory, a fast but comparatively expenstive type of memory technology}
+}
+\newglossaryentry{sp}{name={SP},%
+    description={Stack pointer, pointing the the next available space on the stack},%
+    first={stack pointer (SP)}
+}
+\newglossaryentry{fp}{name={FP},%
+    description={Frame pointer, pointing the the procedure call's current frame},%
+    first={frame pointer (FP)}
+}
+\newglossaryentry{reference zero}{name={reference zero},
+    description={A special register that will be read as zero when used as an operand, or will throw away the result if used as a destination}
+}
+\newglossaryentry{ra}{name={RA},%
+    description={The return address, points to where a procedure call should return on completion},%
+    first={return address (RA)}
+}
+\newglossaryentry{callee}{name={callee},%
+    description={When a subroutine calls another subroutine, the callee is the subroutine that has been called}
+}
+\newglossaryentry{caller}{name={caller},%
+    description={When a subroutine calls another subroutine, the caller is the subroutine initating the call}
+}
+\newglossaryentry{powerpc}{name={PowerPC},%
+    description={A microprocessor made by IBM briefly used as the microprocessor for Macintosh computers}
+}
+\newglossaryentry{intel}{name={Intel},%
+    description={A semiconductor manufacturer, developed the x86 ISA}
+}   
+\newglossaryentry{amd}{name={AMD},%
+    description={Advanced Micro Devices, a semiconductor manufacturer, developed the AMD64 ISA}
+}
+\newglossaryentry{stored program computer}{name={stored program computer},%
+    description={A system that executes programs in memory, in contrast to computers designed to execute fixed programs}
+}
+\newglossaryentry{floating point unit}{name={FPU},%
+    description={A special purpose ALU that operates on floating-point values},%
+    first={floating point unit (FPU)}
+}
+\newglossaryentry{gpu}{name={GPU},%
+    description={A special purpose ALU optimized for executing math operations commonly used in computer graphics applications},%
+    first={graphics processing unit (GPU)}
+}
+\newglossaryentry{opcode}{name={opcode},description={Input to the ALU description the type of operation to be carried out},first={operation code, also known as opcode,}}
 
-\newcommand*{\example}[1]{\vspace{1em}\noindent
+\newcommand*{\example}[1]{\noindent
     \colorbox{blue!10}{\noindent
         \begin{minipage}{\textwidth}
             \textbf{Example \thechapter.\arabic{examples}}\stepcounter{examples}
             #1
         \end{minipage}
-    }\vspace{1em}
+    }
+}
+
+\newcommand*{\myaside}[2]{\noindent
+    \colorbox{red!10}{\noindent
+        \begin{minipage}{\textwidth}
+            \textbf{Aside: #1} 
+            #2
+        \end{minipage}
+    }
 }
 
 \begin{document}
@@ -66,17 +207,26 @@ respectively, due to their different positions in the digit string.
 Among the earliest systems was the Babylonian numeral system. It used base 60. It was the first 
 positional system to be developed, and its influence is present today in the way time and angles are 
 counted in tallies related to 60, such as 60 minutes in an hour and 360 degrees in a circle. Today, 
-the Hindu–Arabic numeral system (base-10) is the most commonly used system globally. However, 
+the Hindu–Arabic numeral system (base-10) is the most commonly used system globally. However,  
 the binary numeral system (base-2) is used in almost all computers and electronic devices because it 
 is easier to implement efficiently in electronic circuits. 
+
+\begin{figure}[b]\centering
+    \begin{tabular}{rcccccccccc}
+        Western Arabic & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+        Eastern Arabic & \textarab{0} & \textarab{1} & \textarab{2} & \textarab{3} & \textarab{4} & \textarab{5} & \textarab{6} & \textarab{7} & \textarab{8} & \textarab{9} \\
+        East Asian & \CJKnumber{0} & \CJKnumber{1} & \CJKnumber{2} & \CJKnumber{3} & \CJKnumber{4} & \CJKnumber{5} & \CJKnumber{6} & \CJKnumber{7} & \CJKnumber{8} & \CJKnumber{9} \\
+    \end{tabular}
+    \caption{Many cultures use base-10 for arithmetic, differing only by the symbol used to represent each digit. Numerals used in Western culturals are formally called Western Arabic numerals\label{fig:base10}}
+\end{figure}
 
 \section{Base-2\label{sec:data:bases}}
 
 You can think of a number base as the way to represent a number. The value of the number does not 
 change when transitioning between number bases. Most people use a base of 10, also known as decimal. 
-For example, 667 is a decimal number. When you work with numbers of different bases, write the number 
-in parenthesis with the base in subscript, for example: $667_{10}$. Binary numbers are base 2. 
-$667_{10}$ in base 2 is representated as $1010011011_2$. 
+For example, 667 is a decimal number. When you work problems that have numbers of different bases, 
+write the number in subscript to avoid confusion, for example: $667_{10}$ the number 667 written in 
+decimal. Binary numbers are base 2. $667_{10}$ in base 2 is representated as $1010011011_2$. 
 
 When spoken, binary numerals are usually read digit-by-digit, in order to distinguish them from 
 decimal numerals. For example, $1010011011_2$ is pronounced \textit{one zero one zero zero one 
@@ -88,22 +238,23 @@ The order of the digits in a binary number represents their power of two. The ri
 called the \acrlong{lsb} (\acrshort{lsb}) represents the power of $2^0$. The left-most digit is called 
 the \acrlong{msb} (\acrshort{msb}) represents the power of $2^{n-1}$ where $n$ is the length of the 
 sequence. For example, with $1010011011_2$ the LSB is 1, representing $2^0$, and the MSB is $2^9$ 
-because the sequence is 10 bits long. Typically with computers, there is a fixed number of digits.
+because the sequence is 10 bits long. %Typically with computers, there is a fixed number of digits.
 
-\example{Convert $1010011011_2$ to decimal by expanding the powers of two. The most straightforeward %
-way to convert this number is to expand it in of powers of two:%
-%
-\begin{equation}\label{sec:data:bases:667bin}%
-	1 \times 2^9 + 0 \times 2^8 + 1 \times 2^7 + 0 \times 2^6 + 0 \times 2^5 + 1 \times 2^4 
-    + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0
-\end{equation}%
-Note that we write out all powers of two starting with $n-1$. In this case $n=10$ because there %
-ten digits. Begining with the \acrshort{msb} and ending with the \acrshort{lsb} copy 0 or 1 %
-based on the corresponding digit in the binary representation of the number. This may seem cumbersome %
-but after some time you will memorize the powers of 2 and it will become easier.}
+\begin{figure}[h!]
+    \example{Convert $1010011011_2$ to decimal by expanding the powers of two. The most straightforeward %
+    way to convert this number is to expand it in of powers of two:%
+    %
+    \begin{equation}\label{sec:data:bases:667bin}%
+        1 \times 2^9 + 0 \times 2^8 + 1 \times 2^7 + 0 \times 2^6 + 0 \times 2^5 + 1 \times 2^4 
+        + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0
+    \end{equation}%
+    Note that we write out all powers of two starting with $n-1$. In this case $n=10$ because there %
+    ten digits. Begining with the \acrshort{msb} and ending with the \acrshort{lsb} copy 0 or 1 %
+    based on the corresponding digit in the binary representation of the number. This may seem cumbersome %
+    but after some time you will memorize the powers of 2 and it will become easier.}
+\end{figure}
 
-
-\subsection{Converting to Base-2\label{sec:data:bases:bin}}
+%\subsection{Converting to Base-2\label{sec:data:bases:bin}}
 
 Expanding the number in terms of powers of two is the simplest way to convert a decimal number to binary 
 (such as in Equation \ref{sec:data:bases:667bin}). To do so, prepare a table with the power of two that 
@@ -241,6 +392,240 @@ alphabet which has 27 letters. At least how many bits will you need to uniquely 
 \end{align*}
 You cannot have a fractional number of digits, so it must be at least 5 bits.
 }
+
+\chapter{Microprocessor Architecture}
+
+The goal of a microprocessor is to execute a given program. Programs are a sequence of instructions %
+stored in a binary format, in a %:w
+particular language, called an \gls{isa}. Generally one \gls{isa} is incompatible with another \gls{isa}. 
+For example, if you had a program for a \gls{powerpc} Macintosh, it would not run on an \gls{aarch64} Macintosh. %
+The \gls{isa} defines the interface for a set of instructions, but the underlying hardware implementation 
+can vary. For example, \gls{amd} and \gls{intel} microprocessors can vary in performance due to hardware 
+optimizations.
+
+The microprocessor is fed % 
+instructions from the program line-by-line as input. It performs some action based on the directions given in 
+the instruction. It provides some output, also in binary. Though, some operations such as \gls{control of flow} 
+may not result in a distinct output from the system. %Example \glspl{isa} are AMD's \gls{x64} and Arm Ltd.'s 
+%\gls{aarch64}.
+
+
+All \glspl{isa} regardless of hardware-level implementation are based on the \gls{von Neumann architecture}--also known 
+as the von Neumann model or Princeton architecture. The \gls{von Neumann architecture} was defined in a 1945 technical %
+description of \gls{edvac}, one of the 
+earliest digital computers, designed by John von Neumann and others. A \gls{von Neumann architecture} is a digital computer 
+with the following components: 
+%
+\begin{itemize}
+    \item A processing unit with both an \gls{arithmetic logic unit} and processor \glspl{register},
+    \item A \gls{control unit} including an \gls{instruction register} and a register called the \gls{instruction pointer},
+    \item A single memory containing data and instructions,
+    \item Input and output mechanisms, and
+    \item External mass storage.
+\end{itemize}
+%
+
+\begin{figure}\centering
+    \begin{tikzpicture}[align=center,node distance=4cm]
+        \node (control) [rec] {Control Unit};
+        \node (alu) [rec, right of=control] {ALU};
+        \node (memory) [rec, right of=alu] {Memory};
+        \node (bus) [rec, below of=alu, node distance=2cm] {System Bus};
+        \draw [darrow] (control) -- (bus.west);
+        \draw [darrow] (alu) -- (bus);
+        \draw [darrow] (memory) -- (bus.east);
+    \end{tikzpicture}
+    \caption{Description of the von Neumann architecture.\label{fig:vonNeumann}}
+\end{figure}
+
+Before the invention of the \gls{von Neumann architecture}, computers used discrete plugboard wiring or fixed
+control circuitry to store the entire program. Examples of this persist in modern times, such as simple non-graphing calculators 
+where the software cannot be updated. Reprogramming early fixed-program machines required redesign of the whole 
+system. The \gls{von Neumann architecture} allowed for programs to be defined by a set of instructions (\gls{isa})
+and for the program to be stored in a memory to be executed. The term \gls{stored program computer} was coined to refer 
+to computers that could a program stored in its memory. 
+
+An overview is given in Figure \ref{fig:vonNeumann}. The main components are connected by a shared bus. %
+%
+The term \gls{von Neumann architecture} has evolved to refer to any \gls{stored program computer} in which an 
+instruction fetch and a data operation cannot occur at the same time (since they share a common bus). 
+%The next instruction to be executed is located in memory. Executing the instruction requires de-referencing
+%the \acrshort{ip}, placing the result in the instruction register, and the control unit setting the
+%operation of the microprocessor. These operations happen in sequence. Thus, the microprocessor cannot manipulate 
+%the data memory without the control unit first understanding the nature of the instruction. 
+This is referred to as the von Neumann bottleneck, which often limits the performance of the corresponding 
+system. %
+There are other architecture designs such as the \gls{Harvard architecture} which distinguishes between 
+memory for data and instructions. It called for separate busses to access instructions and data. However, 
+the vast majority of microprocessors developed in the 21st century have followed the \gls{von Neumann architecture}. %
+%
+%To somewhat complicate matters, modern microprocessors include a \gls{cache} to speed up memory operations.
+%Current \gls{cache} models separate instructions from data, leading to designs that distinguish between 
+%memory for instructions or data. The lines between the \gls{von Neumann architecture} and 
+%\gls{Harvard architecture} may be a bit blurred.
+
+%\begin{figure}[b]
+%    \myaside{Why is it called \gls{x64} if it's an Intel processor?}{%
+%    \gls{x86} is a \gls{cisc} originally developed by Intel in 1978. It was iterated over many %
+%    decades, with AMD as their chief competitor, offering alternative \gls{x86} compatible processors. However, in 2001, when promoting the %
+%    design to 64-bit, Intel decided to push a new \gls{isa} that was not backward compatible with previous %
+%    designs called \gls{ia64}. In 2003, AMD provided an alternative 64-bit version of \gls{x86} that was backward%
+%    compatible. Since \gls{ia64} was not backward compatible, it required software developers to ship two executable % 
+%    versions: one for legacy \gls{x86} systems and one for \gls{ia64} systems. Software developers who wanted legacy %
+%    support could instead write their program in \gls{x86}, and it could run on an \gls{x64} system due to its backward % 
+%    compatability. Over time, develops favored the later solution, leading to the demise of \gls{ia64} in 2020.}
+%\end{figure}
+
+
+\section{Arithmetic Logic Unit\label{sec:alu}}
+
+In computing, an \gls{arithmetic logic unit} is a digital circuit that performs arithmetic and bitwise operations 
+on integer binary numbers. Because binary numbers are a positional numbering system it implements positional 
+arithmetic algorithm (carry-in/out) at the hardware level. %
+This is in contrast to a \gls{floating point unit}, which operates on floating point 
+numbers which is beyond the scope of this class. \glspl{arithmetic logic unit} are a fundamental building block of many types of computing 
+circuits, including the microprocessor, \gls{floating point unit}, and \gls{gpu}. 
+
+Some of the operations a \gls{aarch64} processor can carry out are:
+
+\begin{itemize}
+    \item Simple arithmetic operations, such as addition, subtraction, division, negation, etc. 
+    \item Complex arithmetic operations consisting of multiple types of operation. For example, the \texttt{madd} 
+     operation multiplies two operands, adds a third, and stores the result in a forth.
+    \item Instructions to move values between registers.
+    \item Evaluating the expression of a conditional branch.
+\end{itemize}
+
+The inputs to an ALU are the data to be operated on, called operands, and a \gls{opcode} indicating the operation to be 
+performed; the ALU's output is the result of the performed operation. In many designs, the ALU also has status 
+inputs or outputs and control lines. Status inputs or outputs convey information about a previous operation 
+or the current operation, respectively, between the ALU and external status registers. Control lines are additional 
+data beyond the \gls{opcode} to ensure the correct operation is carried out. With \glspl{load-and-store}, the type 
+of microprocessor architecture we will study in class, the \gls{arithmetic logic unit} can only perform 
+operations on values in \glspl{register}, a special type of memory.
+
+\subsection{Registers\label{sec:alu:reg}}
+
+\Glspl{register} are a concept perhaps unknown to individuals who have just completed their 
+introductory programming courses. A processor \gls{register} is a quickly accessible location available 
+to a computer's processor. %
+It is faster than memory due to modern microprocessors using \gls{sram} memory technology for registers. %
+There are a fixed number of registers. Each register is fixed in size. Registers used by the program are 
+general purpose, although some registers 
+have specific hardware functions, and may be read-only or write-only. Some common purposes for registers are given below:
+%
+\begin{itemize}
+    \item Scratch registers are for general purpose use.
+    \item Reserved registers used by the operating system that should not be modified by the program.
+    \item Flag registers that cannot be modified directly but hold important information such as if overflow occured. These are often used when handling exceptions.
+    \item Reference values that will always be a fixed value when used as an operand, such as zero.
+    \item Pointers to important parts of memory, e.g. the next instruction, the bottom of the stack, where to return from a subroutine.
+    \item Registers for passing arguments between subroutines.
+\end{itemize}
+%
+The guidelines for using registers are defined by
+a \gls{calling convention}. The registers for \gls{aarch64} are given in \ref{tab:registers}. %
+%
+In the past, \glspl{isa} assigned memory %
+addresses to registers. With modern systems, registers have their own addressing system, ussually a 
+compact addressing system with as few bits as needed. Note that the register addresses specified in 
+Table \ref{tab:registers} would be given in binary.
+
+When a program references datum in memory there is a high probability the value will be used or modified again. 
+This is called \gls{temporal locality}. Random access of memory is comparatively slow in modern microprocessors 
+due to the type of technology used (\gls{dram}). You will always need to reference memory at least once per datum, 
+but can use registers as an intermediate structure to hold their value, reducing the number of references performed 
+per program. Holding frequently used values in registers can be critical to a program's performance. Register 
+allocation is performed either by a compiler in the code generation phase, or manually by an assembly language 
+programmer. 
+
+\begin{table}[t]\centering
+    \caption{List of \glspl{register} in \gls{aarch64} and their purpose.\label{tab:registers}}
+    \begin{tabular}{|l|l|}
+        \hline Address(es) & Purpose \\\hline\hline
+        31 & \Gls{sp} or \gls{reference zero} depending on context \\\hline
+        30 & \Gls{ra}, used to return from subroutines \\\hline
+        29 & \Gls{fp}\\\hline
+        19-29 & Scratch registers, saved by the \gls{callee}\\\hline
+        16-18 & Reserved\\\hline
+        9-15 & Scratch registers, unsaved by the \gls{callee}\\\hline
+        8 & Reserved\\\hline
+        0-7 & Arguments passed for input and output with subroutines\\\hline
+    \end{tabular}
+\end{table}
+
+\begin{figure}[b]
+    \myaside{\gls{sram} vs. \gls{dram}}{%
+    It may come as quite a shock to PC builders, but the main memory on your motherboard is too slow for the 
+    microprocessor. Current memory technologies are \gls{sram}, \gls{dram} and flash. Flash is mostly used 
+    for secondary storage. \gls{sram} is a type of memory technology where a single bit is constructed from 
+    logic gates. It is fast, but has a comparatively high number of transistors per bit. Thus, it requires 
+    a lot of physical space on the microprocessor and costs more than other technologies. \gls{dram} on the 
+    other hand uses a single transistor and capacitor to represent a bit. However, due to capacitor's tendency
+    to dissipate over time, \gls{dram} must be refreshed periodically. This is done in chunks, called rows. 
+    The need to organize data in rows leads to a not-so-straightforeward method to randomly access data. So, 
+    it is slower than \gls{sram}, but it is cheaper and requires less physical space.}
+\end{figure}
+
+
+\subsection{Reduced Instruction Set Computing (RISC)\label{sec:alu:risc}}
+
+In the past, there was a need to distinguish between two different types of \glspl{isa}: \gls{reduced instruction set computer} and  
+\gls{complex instruction set computer}. A \gls{reduced instruction set computer} is a computer 
+architecture designed %
+to simplify the individual instructions given to the computer to accomplish tasks. Compared to the 
+instructions given to a \gls{complex instruction set computer}, a \gls{reduced instruction set computer} might require more 
+instructions (more code) in order to accomplish a task because the individual instructions are written 
+in simpler code. The goal is to offset the need to process more instructions by increasing the speed 
+of each instruction, in particular by implementing an instruction pipeline, which may be simpler given 
+simpler instructions.
+
+The key operational concept of the \gls{reduced instruction set computer} computer is that each instruction performs only one function 
+(e.g. copy a value from memory to a register). The \gls{reduced instruction set computer} computer has tens of general-purpose 
+\glspl{register} and the code uses a \gls{load-and-store} in which the code for the performing
+arithmetic are separate from the instructions that grant access to memory of the computer. 
+The design of the CPU allows \gls{reduced instruction set computer} computers few simple addressing modes and predictable instruction times 
+that simplify design of the system as a whole.
+
+Consider the C++ instruction \texttt{i++}. In \gls{aarch64}, a type of \gls{reduced instruction set computer}, 
+this requires three instructions:
+%
+\begin{verbatim}
+ldr w9 [x0] ; Dereference a pointer
+add w9 w9 #1 ; Add one
+str w9 [x0] ; Place result back into memory
+\end{verbatim}
+%
+The first instruction fetches the value of \texttt{i} from memory. The second instruction adds one to 
+the value. The third instruction stores the modified value in memory. In \gls{x64}, a type of \gls{cisc},
+the same instruction is:
+\begin{verbatim}
+add (%rbx), 1 ; Do everything
+\end{verbatim}
+%
+With the later example, the microprocess is instructed to increment a value in memory. It fetches the 
+value, increments it, then stores the result back in memory. This is carried out using a single instruction.
+
+It may not seem obvious why one would want a \gls{reduced instruction set computer}. However, bundling many 
+atomic operations in a single hardware-level instruction increases the complexity of the design. \glspl{cisc}
+tend to be more expensive, and are hard to study. With a \gls{reduced instruction set computer}, the design 
+is simple enough to draw on paper. This is the why we focus on \gls{aarch64} for this introductory class.
+
+With modern microprocessors, the lines between \gls{reduced instruction set computer} and \gls{complex instruction set computer} are
+blurred. Almost all computers, whether \gls{load-and-store} or not, load data from a larger memory into registers 
+where it is used for arithmetic operations and is manipulated or tested by machine instructions. Manipulated data 
+is then often stored back to main memory, either by the same instruction or by a subsequent one. Finally, 
+\gls{aarch64} has a few instructions that violatic the principle of single-function instructions. For example, 
+a common instruction we will see in the future is:
+%
+\begin{verbatim}
+stp x29, x30, [sp, -32]!
+\end{verbatim}
+%
+This instruction moves the \gls{sp} by 32 bytes, and performs two register-to-memory 
+storage operations, as a single hardware-level instruction. It would require more instructions to 
+do this in \gls{x64} and it has no single equivalent instruction. 
+
 
 \printglossary[type=\acronymtype]
 

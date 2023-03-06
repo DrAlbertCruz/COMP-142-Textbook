@@ -1,8 +1,8 @@
 main.pdf: main.tex
-	pdflatex main.tex
+	xelatex main.tex
 	makeglossaries main
-	pdflatex main.tex
-	pdflatex main.tex
+	xelatex main.tex
+	xelatex main.tex
 
 clean:
 	rm -r -f *.aux *.log *.pdf
