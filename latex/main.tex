@@ -146,7 +146,19 @@
     description={A special purpose ALU optimized for executing math operations commonly used in computer graphics applications},%
     first={graphics processing unit (GPU)}
 }
-\newglossaryentry{opcode}{name={opcode},description={Input to the ALU description the type of operation to be carried out},first={operation code, also known as opcode,}}
+\newglossaryentry{opcode}{name={opcode},%
+    description={Input to the ALU description the type of operation to be carried out},%
+    first={operation code, also known as opcode,}
+}
+\newglossaryentry{sign and magnitude}{name={sign and magnitude},%
+    description={A format for storing positive and negative binary numbers that uses a bit to indicate if the number is positive or negative}
+}
+\newglossaryentry{floating point number}{name={floating point number},%
+    description={A method for storing fractional numbers in binary similar to scientific notation}
+}
+\newglossaryentry{magnitude}{name={magnitude},%
+    description={The absolute value of a number}
+}
 
 \newcommand*{\example}[1]{\noindent
     \colorbox{blue!10}{\noindent
@@ -392,6 +404,91 @@ alphabet which has 27 letters. At least how many bits will you need to uniquely 
 \end{align*}
 You cannot have a fractional number of digits, so it must be at least 5 bits.
 }
+
+\chapter{Signed Data}
+
+In mathematics, negative number represents an opposite. In the real number system, a negative number is a number that is 
+less than zero. Negative numbers are often used to represent the magnitude of a loss or deficiency. Negative 
+numbers are used to describe values on a scale that goes below zero, such as the Celsius and Fahrenheit scales for 
+temperature. The laws of arithmetic for negative numbers ensure that the common-sense idea of an opposite is reflected 
+in arithmetic. For example, $-(-3) = 3$ because the opposite of an opposite is the original value.
+
+Negative numbers are usually written with a minus sign in front. For example, -3 represents a negative quantity with a 
+magnitude of three, and is pronounced ``minus three'' or ``negative three.'' Conversely, a number that is greater than 
+zero is called positive; zero is usually (but not always) thought of as neither positive nor negative. The positivity 
+of a number may be emphasized by placing a plus sign before it, e.g. $+3$. In general, the negativity or positivity of 
+a number is referred to as its sign.
+
+Every real number other than zero is either positive or negative. The non-negative whole numbers are referred to as 
+natural numbers (i.e., 0, 1, 2, 3...), while the positive and negative whole numbers (together with zero) are 
+referred to as integers. 
+
+It has been proposed that negative numbers were used on the Greek counting table at Salamis, known as the Salamis Tablet, 
+dated to 300 BC. Negative numbers were also used in the Nine Chapters on the Mathematical Art, which in its present form 
+dates from the period of the Chinese Han Dynasty (202 BC - AD 220), but may well contain much older material. Liu Hui 
+(c. 3rd century) established rules for adding and subtracting negative numbers. By the 7th century, Indian mathematicians 
+such as Brahmagupta were describing the use of negative numbers. Islamic mathematicians further developed the rules of 
+subtracting and multiplying negative numbers and solved problems with negative coefficients. 
+
+In computing, signed number representations are required to encode negative numbers in binary number systems. In 
+mathematics, negative numbers in any base are represented by prefixing them with a minus sign. However, in memory, 
+numbers are represented only as sequences of bits, without extra symbols. The three best-known methods of extending the 
+binary numeral system to represent signed numbers are: sign and magnitude, and one's complement, two's complement. Most 
+modern computing systems use Two's compliment for integer math and sign and magnitude for fractional numbers to be 
+discussed later. 
+
+\section{Sign and Magnitude\label{sec:signmag}}
+
+In the \gls{sign and magnitude} representation, also called signed magnitude, a signed number is represented by the bit 
+pattern corresponding to the sign of the number for the sign bit, and the \gls{magnitude} of the number for the remaining %
+bits. For example, in an eight-bit representation, suppose we define a standard where only seven bits represent the magnitude, 
+which can range from $0000000_2$ to $1111111_2$. Thus, numbers ranging from $-12710_{10}$ to $+12710_{10}$ can be represented 
+once the sign bit (the eighth bit) is added. For example, $-4310_{10}$ encoded in an eight-bit byte is $10101011_2$ while 
+$4310_{10}$ is $00101011_2$. The \gls{msb} is selected as the sign bit and we arbitrarily set 1 for negative and 0 for 
+positive. Using sign and magnitude representation has multiple consequences which makes them more intricate to implement:
+
+\begin{itemize}
+    \item There are two ways to represent zero, $00000000_2$ and $10000000_2$, positive and negative zero respectively.
+    \item Addition and subtraction require different behavior depending on the sign bit.
+    \item Comparing any two numbers requires converting the representation into a format so a comparison can be made.
+\end{itemize}
+
+This approach is directly comparable to the common way of showing a sign by writing positive or negative. Some early 
+binary computers use this representation, perhaps because of its natural relation to common usage. In the example 
+provided below, we demonstrate that sign and and magnitude fails for the arithmetic algorithm.% 
+%
+However, there are reasons to use sign and magnitude. In later chapters we will learn of \glspl{floating point number}, which 
+are use a binary form of scientific notation %
+ and are not a positional numbering system. Since the numbers are not in a positional number system, they cannot 
+ use the arithmetic algorithm, and there would be no additional penalty to using sign and magnitude to encode 
+negative values. 
+
+\begin{figure}[h!]
+    \example{%
+        Suppose that we have a 32-bit \texttt{int} in C-language. If you use sign and magnitude, what is the maximum % 
+        and minimum value you can store in this format? % 
+        We must select a bit to be used as the sign. Most systems use the \gls{msb}. This means we have 31 total bits  %
+        for the magnitude of the number. The maximum value of an unsigned binary number is $2^n-1$. $n=31$ therefore %
+        $2^31-1=2147483647$ is the largest number that can be stored in 31 bits. This representation can hold values %
+        between $+2147483647_{10}$ to $-2147483647_{10}$. %
+    }
+\end{figure}
+
+\begin{figure}[h!]
+    \example{%
+        The purpose of this example is to demonstrate that sign and magnitude will fail if you attempt to perform %
+        arithmetic on it as-is. Add -2 and 4 in sign and magnitude using an 8-bit representation. We will assume %
+        that 1 bit is for the sign and 7 bits are for the magnitude. $-2_{10} = 10000010_2$ and $4_{10} = 00000100$. %
+        If you attempt to perform arithmetic on these two numbers:\\\\
+        \begin{tabular}{rrrrrrrrr}%
+              & 1 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\ %
+            + & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\ \hline %
+              & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 0\\ %
+        \end{tabular}\\\\
+        The result is $10000110_2$. You can see right away that the result is negative so it is incorrect. %
+        Indeed, $0000110_2=6_{10}$ so the result is $-6_{10}$.% 
+    }
+\end{figure}
 
 \chapter{Microprocessor Architecture}
 

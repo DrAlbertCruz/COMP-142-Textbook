@@ -1,8 +1,10 @@
+MAKER=xelatex 
+
 main.pdf: main.tex
-	xelatex main.tex
+	${MAKER} main.tex
 	makeglossaries main
-	xelatex main.tex
-	xelatex main.tex
+	${MAKER} main.tex
+	${MAKER} main.tex
 
 clean:
 	rm -r -f *.aux *.log *.pdf
