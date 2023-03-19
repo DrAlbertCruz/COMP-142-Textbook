@@ -1,8 +1,9 @@
-MAKER=xelatex 
+MAKER=xelatex
+FLAGS=-halt-on-error
 
 main.pdf: main.tex
-	${MAKER} main.tex
-	makeglossaries main
+	${MAKER} ${FLAGS} main.tex
+	makeglossaries ${FLAGS} main
 	${MAKER} main.tex
 	${MAKER} main.tex
 
