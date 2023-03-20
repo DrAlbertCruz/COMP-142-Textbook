@@ -3,7 +3,7 @@ FLAGS=-halt-on-error
 
 main.pdf: main.tex chapters/number-bases.tex
 	${MAKER} ${FLAGS} $<
-	makeglossaries ${FLAGS} main
+	makeglossaries main
 	${MAKER} $<
 	${MAKER} $<
 

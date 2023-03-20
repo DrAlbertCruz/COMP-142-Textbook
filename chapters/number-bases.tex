@@ -29,6 +29,11 @@ is easier to implement efficiently in electronic circuits.
 
 \section{Base-2\label{sec:data:bases}}
 
+The modern binary number system was studied in Europe in the 16th and 17th centuries by Thomas 
+Harriot, Juan Caramuel y Lobkowitz, and Gottfried Leibniz. However, systems related to binary 
+numbers have appeared earlier in multiple cultures including ancient Egypt, China, and India. 
+Leibniz was specifically inspired by the \textit{I Ching}, a classical Chinese text from the 9th century BCE. 
+
 You can think of a number base as the way to represent a number. The value of the number does not 
 change when transitioning between number bases. Most people use a \gls{base-10}, also known as decimal.
 While symbols may change for each digit, the intrinsic value of a number remains the same (see Figure \ref{fig:base10}). 
@@ -112,16 +117,77 @@ Start with the number you want to convert. Perform an integer division by 2. Not
 
 \section{Generalized Number Bases\label{sec:numbers:bases}}
 
-\Gls{base-10} and \gls{base-10} are not the only number bases. The base of a number can be any 
-integer. Some cultures measure units in dozens, or base-12. Time is measured in base-12 or 
-base-24 depending on which country you are in. Other common bases used in computing are \gls{base-8} and 
-\gls{base16}. \Gls{base-8} is often used in Unix system permissions to represent the permissions of
-different user groups. \Gls{base-16} is often used to compactly represent binary numbers to 
+\Gls{base-10} and \gls{base-2} are not the only number bases. The base of a number can be any 
+integer. Some cultures measure units in dozens, or base-12. Hours are measured in base-12 or 
+base-24 depending on which country you are in; minutes, base-60. Other common bases used in computing are \gls{base-8} and 
+\gls{base-16}. \Gls{base-8} is used in Unix system permissions to represent the permissions of
+different user classes. \Gls{base-16} is used to compactly represent binary numbers to 
 reduce human error when reading, understanding or copying data.
 
-In Unix system permissions on Unix-like file systems are defined in the POSIX.1-2017 standard,
-which uses three classes known as user, group, and others. Further, each class of user can attempt 
-to read, write and execute a specific file. It is able to or it is not (it is binary), so  
+The equation defining expansions of \gls{base-2} can be generalized to any base $b$. Counting from $n-1$ 
+to zero, if you have a sequence of numbers $m = a_{n-1}a_{n-2}a_{n-3}...a_2a_1a_0$ 
+where $a_{n-1}$ is the \gls{msb} and $a_0$ is the \gls{lsb}, you can obtain the value of this number 
+by summing up powers of $b$:
+%
+\begin{equation}\label{eq:basen}
+    m = \sum_{i=0}^{n-1} a_i \times b^i
+\end{equation}
+%
+Furthermore the divide-by-2 algorithm can be generalized as a divide-by-$n$ algorithm if you divide by $n$ rather than 2.
+
+\begin{figure}[h]
+    \example{How many donuts are in a box of twelve dozen donuts? \textit{Assuming that one means
+    that there are $12_{12}$ donuts and not being redundant or $12 \times 12$ donuts.} %
+    \begin{align*} %
+        m & = \sum_{i=0}^{n-1} a_i \times 12^i \\
+        m & = 1 \times 12^1 + 2 \times 12^0  \\
+        m & = 12 + 2 =  14 \\
+    \end{align*}%
+    There are $14_{10}$ donuts in a box of $12_{12}$ donuts. 
+    }
+\end{figure}
+
+\subsection{Octets}
+
+File permissions on Unix-like file systems are defined in the POSIX.1-2017 standard. There 
+are three types of users, called classes: user, group, and others. Further, each class of user can 
+read ($r$), write ($w$) or execute a file ($x$). Each permission (read, write, execute) is binary. 
+You can or cannot perform the action. If you order them ($rwx$) as a bit string the number can 
+encode the specific combination of allowed/disallowed priveledges. Continuing with the example, 
+$r\neg w \neg x = 100_2 = 4_{8}$. Allowing all priveledges can be encoded 
+as $111_2 = 7_{8}$.  Allowing none would be the deassertion of all bits or $0$.
+
+There are a maximum of 8 combinations (remember to include 0), thus it is a 
+\gls{base-8} system. In practice it is called an octet. This system is not used for arithmetic. Rather,
+the number is used as a category to indicate the permissions for a class. Each binary digit encodes 
+the permissions in the order given above (read, write and execute). Because there are three classes, 
+Unit-like permissions are given with three octets. For example, $777_8$ allows all permissions 
+for all user classes.
+
+\begin{figure}[h]
+    \example{Serving files for the Internet requires special permissions. The user should be allowed read %
+    and write files, but group and others should only be allowed to read files. For folders, the user should %
+    be allowed all permissions. But, group and others should only be allowed to execute the folder. Give %
+    the octets for the files and folders for serving files to the Internet. \\\\%
+    %
+    The order of classes is user, group and others. The user can read and write files, but not execute them. %
+    This is defined as $110_2 = 6_8$. Group and others can only read the files but not write or execute them. %
+    This is defined as $010_2 = 4_8$. Thus, the octet we need for files on a web server is $644_8$. \\\\%
+    %
+    For folders, the user has all priveledges. We know this is $7_8$. However, group and others can only %
+    execute the folder. This is defined as $001_2 = 1_8$. The octet we need for folders on the web server is %
+    $711_8$.
+    }
+\end{figure}
+
+\begin{figure}[h]
+    \example{In binary, the octet of permissions for a Unix file is $111111100_2$. What can each group %
+    do with this file? The first octet or three bits are the user permissions. $111_2 = 7_8$, so the user %
+    who owns the file can do anything with it--similarly for the group. However, the last three bits are %
+    $100_2 = 4_8$. So others can only read the file. %
+    }
+\end{figure}
+
 \vfill\clearpage
 \section*{Homework Questions}
 
