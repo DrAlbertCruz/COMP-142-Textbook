@@ -1,0 +1,108 @@
+\chapter{Data Representation and Storage\label{sec:data}}
+\setcounter{examples}{1}
+
+Computers use binary numbers because they are made up of electronic components called transistors, 
+which can be either in an on or off state. By using a \gls{base-2}, which only 
+has two digits (0 and 1), computers can represent and process information using these on and 
+off states of transistors.
+
+The \gls{base-2} numeral system is a positional notation with a base of 2. Each digit is referred to as 
+a \gls{bit}, or binary digit. Because of its straightforward implementation in digital electronic 
+circuitry using logic gates, the binary system is used by almost all modern computers and 
+computer-based devices, as a preferred system of use, over various other human techniques of 
+communication, because of the underlying transitor-level components.
+
+Numbers represented in computers are constrained by a finite amount of space. Your hard disk drive 
+has a finite number of bits that can be stored on it. For example, a 256 gigabyte (GB) hard disk drive 
+can store 96,000,000,000 bits. This is a lot of data. However, there are an infinite number of natural
+numbers, and it is possible to define a number that would be too large to store on the hard drive such as 
+$2^{96000000000}$.
+
+The microprocessor uses a bus to exchange information. This bus has a finite capacity. So, even if 
+there were a hard drive with the ability to store all natural numbers (infinite capacity), you can 
+only retrieve a finite number of bits from the drive per second. For example, the \gls{x64} \gls{isa} 
+can retrieve 64-bits (though it can do this at a rate of millions or billions of times per second).
+
+Finally, a hard drive or memory does not store a single number. For it to be useful we will need it 
+to store a set of numbers. So, there must be 
+some scheme for organizing the data into useable chunks. These chunks will need to be organized or 
+indexed in a way that the microprocessor can reach it through the bus. This is called an \gls{address}. 
+This leads to the following questions:
+%
+\begin{enumerate}
+    \item If you have a finite number of bits, what happens when you have a number that is too large to be properly stored?
+    \item How can you organize data into smaller chunks in memory so that they are useable?
+    \item How can you index the chunks of memory so that they can be referenced by the microprocessor?
+    \item Considering that the bus is finite, when chunks of memory are retrieved, in what order are they passed?
+\end{enumerate}
+%
+These questions will be the focus of this chapter. 
+
+
+\section{Integer Overflow\label{sec:data:overflow}}
+With digital computers, any chunk of data will have a finite number of bits. It is important to note the largest positive 
+integer that can be stored for a binary sequence of a given length to avoid a concept called \gls{overflow}. 
+For \gls{unsigned} numbers this is defined as: %
+
+%
+\begin{equation} \label{eq:sizeofunsignedint}
+    2^n - 1
+\end{equation}
+%
+Where $n$ is the number of digits in the binary sequence.
+
+In computer programming, an integer overflow occurs when an arithmetic operation attempts to create a numeric value that is 
+outside of the range that can be represented with a given number of digits. The most common result of an overflow is that the 
+least significant representable digits of the result are stored; the result is said to wrap around the maximum (i.e. modulo a 
+power of the radix, usually two in modern computers, but sometimes ten or another radix).
+
+An overflow condition may give results leading to unintended behavior. In particular, if the possibility has not been anticipated, 
+overflow can compromise a program's reliability and security. For some applications, such as timers and clocks, wrapping on 
+overflow can be desirable. On some processors like graphics processing units (GPUs) and digital signal processors (DSPs) which 
+support saturation arithmetic, overflowed results would be "clamped", i.e. set to the minimum or the maximum value in the 
+representable range, rather than wrapped around. 
+
+Microprocessors have a special status bit called the carry flag. It is set when the result of an addition or subtraction, 
+considering the operands and result as unsigned numbers, does not fit in the given number of bits. This indicates an overflow 
+with a carry or borrow from the most significant bit. An immediately following add with carry or subtract with borrow operation 
+would use the contents of this flag to modify a register or a memory location that contains the higher part of a multi-word value. 
+In later sections we will discuss how this is used by the microprocessor to compare two values.
+
+
+\begin{figure}[h]
+    \example{What is the largest number that you can store in an unsigned C-language \texttt{int} data type? %
+    Note that \texttt{int} is 32 bits, so $n=32$
+    \begin{align*}%
+        & 2^n-1 \\
+        & 2^{32} - 1 = 4,294,967,295
+    \end{align*}%
+    Perhaps this is somewhat shocking. A C-language \texttt{int} cannot hold numbers greater than four billion.
+    }
+\end{figure}
+
+\begin{figure}[h]
+    \example{Suppose that you want to use binary numbers to encode specific letters of the Spanish language %
+    alphabet which has 27 letters. At least how many bits will you need to uniquely encode each letter?
+    \begin{align*}
+        & 2^n-1 \geq 27 \\
+        & 2^n \geq 28 \\
+        & n \geq \log_2 28 \\
+        & n \geq 4.8 \approx 5
+    \end{align*}
+    You cannot have a fractional number of digits, so it must be at least 5 bits.
+    }
+\end{figure}
+
+\section{Bit Organization\label{sec:data:bits}}
+
+Long sequences of bits can be difficult to understand. One method for aggregating \gls{base-2} was covered (hexadecimal). 
+Another method groups numbers into units, similarly to measurement units. For example, in English units one yard is 
+three feet, and one foot is twelve inches. There is a similar system for organizing bits. The most common method is 
+a byte. A byte is eight bits and abbreviated with a capital B. Bytes are abbreviated with decimal metric prefixes. For 
+example, 1 KB is 1,000 bytes or 8,000 bits.
+
+It is sometimes necessary to specify a chunk of data greater than a byte. This chunk is formally called a word. The 
+length of a word varies from system to system. For example, the PlayStation 2's MIPS microprocessor had a word length of 
+32 bits or 4 bytes. Modern \gls{x64} systems use a word length of 2 bytes, due to being backward compatible with systems 
+from the 1970's--when 2 bytes was an appropriately sized chunk of data. The word length is arbitrary and does not necessarily
+indicate the performance of a system.

@@ -1,0 +1,440 @@
+\documentclass[letterpaper, 12pt]{book}
+\usepackage[margin=1in]{geometry}
+\usepackage[acronym]{glossaries}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{arabxetex}
+\usepackage{xeCJK}
+\usepackage{CJKnumb}
+
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzstyle{rec} = [rectangle,minimum width=3cm, minimum height=1cm,text centered, draw=black]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+\tikzstyle{darrow} = [thick,<->,>=stealth]
+
+\makeglossaries
+
+\include{gloss/gloss.tex}
+
+\newcommand*{\example}[1]{\noindent
+    \colorbox{blue!10}{\noindent
+        \begin{minipage}{\textwidth}
+            \textbf{Example \thechapter.\arabic{examples}}\stepcounter{examples}
+            #1
+        \end{minipage}
+    }
+}
+
+\newcommand*{\lemma}[1]{\noindent
+    \colorbox{green!10}{\noindent
+        \begin{minipage}{\textwidth}
+            \textbf{Lemma \thechapter.\arabic{examples}}\stepcounter{lemma}
+            #1
+        \end{minipage}
+    }
+}
+
+\newcommand*{\myaside}[2]{\noindent
+    \colorbox{red!10}{\noindent
+        \begin{minipage}{\textwidth}
+            \textbf{Aside: #1} 
+            #2
+        \end{minipage}
+    }
+}
+
+\begin{document}
+
+
+\newcounter{examples}{1}
+\newcounter{lemma}{1}
+
+\section{Preface\label{sec:preface}}
+
+This textbook is an open-source document that meets the requirements of COMP 142 Computer Architecture and Organization. The goal of the class is to study the organization and behavior of real computer systems at the assembly-language level, the mapping of statements and constructs in a high-level language onto sequences of machine instructions is studied, as well as the internal representation of simple data types and structures. It also covers numerical computation, noting the various data representation errors and potential procedural errors.
+
+The general topics covered by the class are:
+
+\begin{enumerate}
+\item Bits, bytes, and words
+\item Numeric data representation and number bases
+\item Fixed- and floating-point systems
+\item Signed and twos-complement representations
+\item Representation of nonnumeric data (character codes, graphical data)
+\item Representation of records and arrays
+\item Basic organization of the von Neumann machine
+\item Control unit; instruction fetch, decode, and execution
+    Instruction sets and types (data manipulation, control, I/O)
+\item Assembly/machine language programming
+\item Instruction formats
+\item Addressing modes
+\item Subroutine call and return mechanisms
+\item I/O and interrupts
+\end{enumerate}
+
+
+\include{chapters/number-bases.tex}
+\include{chapters/data-rep.tex}
+
+\chapter{Signed Data}
+
+A negative number is a number that is less than zero. Negative numbers are used to describe 
+values on a scale that goes below zero, such as the Celsius and Fahrenheit scales for 
+temperature. The laws of arithmetic for negative numbers ensure that the common-sense idea 
+of an opposite is reflected in arithmetic. For example, $-(-3) = 3$ because the opposite of 
+an opposite is the original value.
+
+Negative numbers are usually written with a minus sign in front. For example, -3 represents a 
+negative quantity with a magnitude of three, and is pronounced ``minus three'' or ``negative 
+three.'' Conversely, a number that is greater than zero is called positive; zero is usually 
+(but not always) thought of as neither positive nor negative. The positivity of a number may 
+be emphasized by placing a plus sign before it, e.g. $+3$. In general, the negativity or 
+positivity of a number is referred to as its sign. %
+%
+Every real number other than zero is either positive or negative. 
+
+It has been proposed that negative numbers were used on the Greek counting table at Salamis, known as the Salamis Tablet, 
+dated to 300 BC. Negative numbers were also used in the Nine Chapters on the Mathematical Art, which in its present form 
+dates from the period of the Chinese Han Dynasty (202 BC - AD 220), but may well contain much older material. Liu Hui 
+(c. 3rd century) established rules for adding and subtracting negative numbers. By the 7th century, Indian mathematicians 
+such as Brahmagupta were describing the use of negative numbers. Islamic mathematicians further developed the rules of 
+subtracting and multiplying negative numbers and solved problems with negative coefficients. 
+
+In computing, signed number representations are required to encode negative numbers in binary number systems. In 
+mathematics, negative numbers in any base are represented by prefixing them with a minus sign. However, in memory, 
+numbers are represented only as sequences of bits, without extra symbols. The three best-known methods of extending the 
+binary numeral system to represent signed numbers are: sign and magnitude, one's complement, and two's complement. Most 
+modern computing systems use two's compliment for integer math, and sign and magnitude for fractional numbers--%
+discussed in a later chapter. 
+
+\section{Sign and Magnitude\label{sec:signmag}}
+
+In the \gls{sign and magnitude} representation, also called signed magnitude, a signed number is represented by a single bit 
+corresponding to the sign of the number (called the sign bit), and the \gls{magnitude} of the number for the remaining %
+bits. For example, in an eight-bit representation, suppose we define a standard where only seven bits represent the magnitude, 
+which can range from $0000000_2$ to $1111111_2$. Thus, numbers ranging from $-12710_{10}$ to $+12710_{10}$ can be represented 
+once the sign bit (the eighth bit) is added. For example, $-4310_{10}$ encoded in an eight-bit byte is $10101011_2$ while 
+$4310_{10}$ is $00101011_2$. The \gls{msb} is selected as the sign bit and we arbitrarily set 1 for negative and 0 for 
+positive. Using sign and magnitude representation has multiple consequences which makes them more intricate to implement:
+
+\begin{itemize}
+    \item There are two ways to represent zero, $00000000_2$ and $10000000_2$, positive and negative zero respectively.
+    \item Addition and subtraction require different behavior depending on the sign bit.
+    \item Comparing any two numbers requires converting the representation into a format so a comparison can be made.
+\end{itemize}
+
+This approach is directly comparable to the common way of showing a sign by writing positive or negative. Some early 
+binary computers use this representation, perhaps because of its natural relation to common usage. In the example 
+provided below, we demonstrate that sign and and magnitude fails for the arithmetic algorithm.% 
+%
+However, there are reasons to use sign and magnitude. In later chapters we will learn of \glspl{floating point number}, which 
+are use a binary form of scientific notation %
+ and are not a positional numbering system. Since the numbers are not in a positional number system, they cannot 
+ use the arithmetic algorithm, and there would be no additional penalty to using sign and magnitude to encode 
+negative values. 
+
+\begin{figure}[ht]
+    \lemma{%
+        Assume that an integer is stored in $m$ bits. One bit is required to be the sign bit. Thus, the magnitude %
+        must be represented in $m - 1$ bits. We know that the greatest number that can be stored in $n$ bits is %
+        $2^{n}-1$, therefore the greatest magnitude that can be stored in a sign and magnitude notation is $2^{m-1}-1$.%
+    }
+\end{figure}
+
+\begin{figure}[ht]
+    \example{%
+        Suppose that we have a 32-bit \texttt{int} in C-language. If you use sign and magnitude, what is the maximum % 
+        and minimum value you can store in this format? % 
+        %We must select a bit to be used as the sign. Most systems use the \gls{msb}. %
+        The greatest magnitude that can be stored in a sign and magnitude nubmer is $2^{m-1}-1$. With $m=32$, this evaluates as %
+        $2^{31}-1=2147483647$. %
+        It can be either positive or negative so the maximum and minimum values are %
+        $2147483647$ and $-2147483647$. %
+    }
+\end{figure}
+
+\begin{figure}[ht]
+    \example{%
+        The purpose of this example is to demonstrate that sign and magnitude will fail if you attempt to perform %
+        arithmetic on it as-is. Add -2 and 4 in sign and magnitude using an 8-bit representation. We will assume %
+        that 1 bit is for the sign and 7 bits are for the magnitude. $-2_{10} = 10000010_2$ and $4_{10} = 00000100$. %
+        If you attempt to perform arithmetic on these two numbers:\\\\
+        \begin{tabular}{rrrrrrrrr}%
+              & 1 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\ %
+            + & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\ \hline %
+              & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 0\\ %
+        \end{tabular}\\\\
+        The result is $10000110_2$. You can see right away that the result is negative so it is incorrect. %
+        Indeed, $0000110_2=6_{10}$ so the result is $-6_{10}$.% 
+    }
+\end{figure}
+
+\section{Ones' Compliment\label{sec:ones}}
+
+The \gls{ones compliment} of a binary number is the value obtained by negating the bits in the binary representation of %
+the number (swapping 0s and 1s). The name ``ones' complement'' (note this is possessive of the plural ``ones'', not of a %
+singular ``one'') refers to the fact that such an inverted value, if added to the original, would always produce an ``all %
+ones'' number. The term ``complement'' refers to such pairs of mutually additive inverse numbers, here in respect to a %
+non-0 base number. 
+
+Many early computers, including the UNIVAC 1101, CDC 160, CDC 6600, the LINC, the PDP-1, and the UNIVAC 1107, used ones' 
+complement arithmetic. Successors of the CDC 6600 continued to use ones' complement arithmetic until the late 1980s, and 
+the descendants of the UNIVAC 1107 (the UNIVAC 1100/2200 series) still do, but the majority of modern computers use two's 
+complement. 
+
+\begin{figure}[ht]
+    \lemma{%
+        Assume that an integer is stored in $m$ bits. One bit is required to be the sign bit. Thus, the magnitude %
+        must be represented in $m - 1$ bits. We know that the greatest number that can be stored in $n$ bits is %
+        $2^{n}-1$, therefore the greatest magnitude that can be stored in a sign and magnitude notation is $2^{m-1}-1$.%
+    }
+\end{figure}
+
+An N-bit ones' complement numeral 
+system can only represent integers in the range −(2N−1−1) to 2N−1−1 It is one of three common representations for 
+negative integers in binary computers, along with two's complement and sign-magnitude.
+
+\chapter{Microprocessor Architecture}
+
+The goal of a microprocessor is to execute a given program. Programs are a sequence of instructions %
+stored in a binary format, in a %:w
+particular language, called an \gls{isa}. Generally one \gls{isa} is incompatible with another \gls{isa}. 
+For example, if you had a program for a \gls{powerpc} Macintosh, it would not run on an \gls{aarch64} Macintosh. %
+The \gls{isa} defines the interface for a set of instructions, but the underlying hardware implementation 
+can vary. For example, \gls{amd} and \gls{intel} microprocessors can vary in performance due to hardware 
+optimizations.
+
+The microprocessor is fed % 
+instructions from the program line-by-line as input. It performs some action based on the directions given in 
+the instruction. It provides some output, also in binary. Though, some operations such as \gls{control of flow} 
+may not result in a distinct output from the system. %Example \glspl{isa} are AMD's \gls{x64} and Arm Ltd.'s 
+%\gls{aarch64}.
+
+
+All \glspl{isa} regardless of hardware-level implementation are based on the \gls{von Neumann architecture}--also known 
+as the von Neumann model or Princeton architecture. The \gls{von Neumann architecture} was defined in a 1945 technical %
+description of \gls{edvac}, one of the 
+earliest digital computers, designed by John von Neumann and others. A \gls{von Neumann architecture} is a digital computer 
+with the following components: 
+%
+\begin{itemize}
+    \item A processing unit with both an \gls{arithmetic logic unit} and processor \glspl{register},
+    \item A \gls{control unit} including an \gls{instruction register} and a register called the \gls{instruction pointer},
+    \item A single memory containing data and instructions,
+    \item Input and output mechanisms, and
+    \item External mass storage.
+\end{itemize}
+%
+
+\begin{figure}\centering
+    \begin{tikzpicture}[align=center,node distance=4cm]
+        \node (control) [rec] {Control Unit};
+        \node (alu) [rec, right of=control] {ALU};
+        \node (memory) [rec, right of=alu] {Memory};
+        \node (bus) [rec, below of=alu, node distance=2cm] {System Bus};
+        \draw [darrow] (control) -- (bus.west);
+        \draw [darrow] (alu) -- (bus);
+        \draw [darrow] (memory) -- (bus.east);
+    \end{tikzpicture}
+    \caption{Description of the von Neumann architecture.\label{fig:vonNeumann}}
+\end{figure}
+
+Before the invention of the \gls{von Neumann architecture}, computers used discrete plugboard wiring or fixed
+control circuitry to store the entire program. Examples of this persist in modern times, such as simple non-graphing calculators 
+where the software cannot be updated. Reprogramming early fixed-program machines required redesign of the whole 
+system. The \gls{von Neumann architecture} allowed for programs to be defined by a set of instructions (\gls{isa})
+and for the program to be stored in a memory to be executed. The term \gls{stored program computer} was coined to refer 
+to computers that could a program stored in its memory. 
+
+An overview is given in Figure \ref{fig:vonNeumann}. The main components are connected by a shared bus. %
+%
+The term \gls{von Neumann architecture} has evolved to refer to any \gls{stored program computer} in which an 
+instruction fetch and a data operation cannot occur at the same time (since they share a common bus). 
+%The next instruction to be executed is located in memory. Executing the instruction requires de-referencing
+%the \acrshort{ip}, placing the result in the instruction register, and the control unit setting the
+%operation of the microprocessor. These operations happen in sequence. Thus, the microprocessor cannot manipulate 
+%the data memory without the control unit first understanding the nature of the instruction. 
+This is referred to as the von Neumann bottleneck, which often limits the performance of the corresponding 
+system. %
+There are other architecture designs such as the \gls{Harvard architecture} which distinguishes between 
+memory for data and instructions. It called for separate busses to access instructions and data. However, 
+the vast majority of microprocessors developed in the 21st century have followed the \gls{von Neumann architecture}. %
+%
+%To somewhat
+ complicate matters, modern microprocessors include a \gls{cache} to speed up memory operations.
+%Current \gls{cache} models separate instructions from data, leading to designs that distinguish between 
+%memory for instructions or data. The lines between the \gls{von Neumann architecture} and 
+%\gls{Harvard architecture} may be a bit blurred.
+
+%\begin{figure}[b]
+%    \myaside{Why is it called \gls{x64} if it's an Intel processor?}{%
+%    \gls{x86} is a \gls{cisc} originally developed by Intel in 1978. It was iterated over many %
+%    decades, with AMD as their chief competitor, offering alternative \gls{x86} compatible processors. However, in 2001, when promoting the %
+%    design to 64-bit, Intel decided to push a new \gls{isa} that was not backward compatible with previous %
+%    designs called \gls{ia64}. In 2003, AMD provided an alternative 64-bit version of \gls{x86} that was backward%
+%    compatible. Since \gls{ia64} was not backward compatible, it required software developers to ship two executable % 
+%    versions: one for legacy \gls{x86} systems and one for \gls{ia64} systems. Software developers who wanted legacy %
+%    support could instead write their program in \gls{x86}, and it could run on an \gls{x64} system due to its backward % 
+%    compatability. Over time, develops favored the later solution, leading to the demise of \gls{ia64} in 2020.}
+%\end{figure}
+
+
+\section{Arithmetic Logic Unit\label{sec:alu}}
+
+In computing, an \gls{arithmetic logic unit} is a digital circuit that performs arithmetic and bitwise operations 
+on integer binary numbers. Because binary numbers are a positional numbering system it implements positional 
+arithmetic algorithm (carry-in/out) at the hardware level. %
+This is in contrast to a \gls{floating point unit}, which operates on floating point 
+numbers which is beyond the scope of this class. \glspl{arithmetic logic unit} are a fundamental building block of many types of computing 
+circuits, including the microprocessor, \gls{floating point unit}, and \gls{gpu}. 
+
+Some of the operations a \gls{aarch64} processor can carry out are:
+
+\begin{itemize}
+    \item Simple arithmetic operations, such as addition, subtraction, division, negation, etc. 
+    \item Complex arithmetic operations consisting of multiple types of operation. For example, the \texttt{madd} 
+     operation multiplies two operands, adds a third, and stores the result in a forth.
+    \item Instructions to move values between registers.
+    \item Evaluating the expression of a conditional branch.
+\end{itemize}
+
+The inputs to an ALU are the data to be operated on, called operands, and a \gls{opcode} indicating the operation to be 
+performed; the ALU's output is the result of the performed operation. In many designs, the ALU also has status 
+inputs or outputs and control lines. Status inputs or outputs convey information about a previous operation 
+or the current operation, respectively, between the ALU and external status registers. Control lines are additional 
+data beyond the \gls{opcode} to ensure the correct operation is carried out. With \glspl{load-and-store}, the type 
+of microprocessor architecture we will study in class, the \gls{arithmetic logic unit} can only perform 
+operations on values in \glspl{register}, a special type of memory.
+
+\subsection{Registers\label{sec:alu:reg}}
+
+\Glspl{register} are a concept perhaps unknown to individuals who have just completed their 
+introductory programming courses. A processor \gls{register} is a quickly accessible location available 
+to a computer's processor. %
+It is faster than memory due to modern microprocessors using \gls{sram} memory technology for registers. %
+There are a fixed number of registers. Each register is fixed in size. Registers used by the program are 
+general purpose, although some registers 
+have specific hardware functions, and may be read-only or write-only. Some common purposes for registers are given below:
+%
+\begin{itemize}
+    \item Scratch registers are for general purpose use.
+    \item Reserved registers used by the operating system that should not be modified by the program.
+    \item Flag registers that cannot be modified directly but hold important information such as if overflow occured. These are often used when handling exceptions.
+    \item Reference values that will always be a fixed value when used as an operand, such as zero.
+    \item Pointers to important parts of memory, e.g. the next instruction, the bottom of the stack, where to return from a subroutine.
+    \item Registers for passing arguments between subroutines.
+\end{itemize}
+%
+The guidelines for using registers are defined by
+a \gls{calling convention}. The registers for \gls{aarch64} are given in \ref{tab:registers}. %
+%
+In the past, \glspl{isa} assigned memory %
+addresses to registers. With modern systems, registers have their own addressing system, ussually a 
+compact addressing system with as few bits as needed. Note that the register addresses specified in 
+Table \ref{tab:registers} would be given in binary.
+
+When a program references datum in memory there is a high probability the value will be used or modified again. 
+This is called \gls{temporal locality}. Random access of memory is comparatively slow in modern microprocessors 
+due to the type of technology used (\gls{dram}). You will always need to reference memory at least once per datum, 
+but can use registers as an intermediate structure to hold their value, reducing the number of references performed 
+per program. Holding frequently used values in registers can be critical to a program's performance. Register 
+allocation is performed either by a compiler in the code generation phase, or manually by an assembly language 
+programmer. 
+
+\begin{table}[t]\centering
+    \caption{List of \glspl{register} in \gls{aarch64} and their purpose.\label{tab:registers}}
+    \begin{tabular}{|l|l|}
+        \hline Address(es) & Purpose \\\hline\hline
+        31 & \Gls{sp} or \gls{reference zero} depending on context \\\hline
+        30 & \Gls{ra}, used to return from subroutines \\\hline
+        29 & \Gls{fp}\\\hline
+        19-29 & Scratch registers, saved by the \gls{callee}\\\hline
+        16-18 & Reserved\\\hline
+        9-15 & Scratch registers, unsaved by the \gls{callee}\\\hline
+        8 & Reserved\\\hline
+        0-7 & Arguments passed for input and output with subroutines\\\hline
+    \end{tabular}
+\end{table}
+
+\begin{figure}[b]
+    \myaside{\gls{sram} vs. \gls{dram}}{%
+    It may come as quite a shock to PC builders, but the main memory on your motherboard is too slow for the 
+    microprocessor. Current memory technologies are \gls{sram}, \gls{dram} and flash. Flash is mostly used 
+    for secondary storage. \gls{sram} is a type of memory technology where a single bit is constructed from 
+    logic gates. It is fast, but has a comparatively high number of transistors per bit. Thus, it requires 
+    a lot of physical space on the microprocessor and costs more than other technologies. \gls{dram} on the 
+    other hand uses a single transistor and capacitor to represent a bit. However, due to capacitor's tendency
+    to dissipate over time, \gls{dram} must be refreshed periodically. This is done in chunks, called rows. 
+    The need to organize data in rows leads to a not-so-straightforeward method to randomly access data. So, 
+    it is slower than \gls{sram}, but it is cheaper and requires less physical space.}
+\end{figure}
+
+
+\subsection{Reduced Instruction Set Computing (RISC)\label{sec:alu:risc}}
+
+In the past, there was a need to distinguish between two different types of \glspl{isa}: %
+\gls{reduced instruction set computer} and  %
+\gls{complex instruction set computer}. A \gls{reduced instruction set computer} is a computer 
+architecture designed %
+to simplify the individual instructions given to the computer to accomplish tasks. Compared to the 
+instructions given to a \gls{complex instruction set computer}, a \gls{reduced instruction set computer} might require more 
+instructions (more code) in order to accomplish a task because the individual instructions are written 
+in simpler code. The goal is to offset the need to process more instructions by increasing the speed 
+of each instruction, in particular by implementing an instruction pipeline, which may be simpler given 
+simpler instructions.
+
+The key operational concept of the \gls{reduced instruction set computer} computer is that each instruction performs only one function 
+(e.g. copy a value from memory to a register). The \gls{reduced instruction set computer} computer has tens of general-purpose 
+\glspl{register} and the code uses a \gls{load-and-store} in which the code for the performing
+arithmetic are separate from the instructions that grant access to memory of the computer. 
+The design of the CPU allows \gls{reduced instruction set computer} computers few simple addressing modes and predictable instruction times 
+that simplify design of the system as a whole.
+
+Consider the C++ instruction \texttt{i++}. In \gls{aarch64}, a type of \gls{reduced instruction set computer}, 
+this requires three instructions:
+%
+\begin{verbatim}
+ldr w9 [x0] ; Dereference a pointer
+add w9 w9 #1 ; Add one
+str w9 [x0] ; Place result back into memory
+\end{verbatim}
+%
+The first instruction fetches the value of \texttt{i} from memory. The second instruction adds one to 
+the value. The third instruction stores the modified value in memory. In \gls{x64}, a type of \gls{cisc},
+the same instruction is:
+\begin{verbatim}
+add (%rbx), 1 ; Do everything
+\end{verbatim}
+%
+With the later example, the microprocess is instructed to increment a value in memory. It fetches the 
+value, increments it, then stores the result back in memory. This is carried out using a single instruction.
+
+It may not seem obvious why one would want a \gls{reduced instruction set computer}. However, bundling many 
+atomic operations in a single hardware-level instruction increases the complexity of the design. \glspl{cisc}
+tend to be more expensive, and are hard to study. With a \gls{reduced instruction set computer}, the design 
+is simple enough to draw on paper. This is the why we focus on \gls{aarch64} for this introductory class.
+
+With modern microprocessors, the lines between \gls{reduced instruction set computer} and \gls{complex instruction set computer} are
+blurred. Almost all computers, whether \gls{load-and-store} or not, load data from a larger memory into registers 
+where it is used for arithmetic operations and is manipulated or tested by machine instructions. Manipulated data 
+is then often stored back to main memory, either by the same instruction or by a subsequent one. Finally, 
+\gls{aarch64} has a few instructions that violatic the principle of single-function instructions. For example, 
+a common instruction we will see in the future is:
+%
+\begin{verbatim}
+stp x29, x30, [sp, -32]!
+\end{verbatim}
+%
+This instruction moves the \gls{sp} by 32 bytes, and performs two register-to-memory 
+storage operations, as a single hardware-level instruction. It would require more instructions to 
+do this in \gls{x64} and it has no single equivalent instruction. 
+
+
+\printglossary[type=\acronymtype]
+
+\printglossary
+ 
+\end{document}

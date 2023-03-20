@@ -1,0 +1,238 @@
+
+\chapter{Number Bases\label{sec:numbers}}
+\setcounter{examples}{1}
+
+A positional system is a numeral system in which the contribution of a digit to the value of a number 
+is the value of the digit multiplied by a factor determined by the position of the digit. In early 
+numeral systems, such as Roman numerals, a digit has only one value: I means one, X means ten and C 
+a hundred (however, the value may be negated if placed before another digit). In modern positional 
+systems, such as the decimal system, the position of the digit means that its value must be multiplied 
+by some value: in 555, the three identical symbols represent five hundreds, five tens, and five units, 
+respectively, due to their different positions in the digit string. 
+
+Among the earliest systems was the Babylonian numeral system. It used base 60. It was the first 
+positional system to be developed, and its influence is present today in the way time and angles are 
+counted in tallies related to 60, such as 60 minutes in an hour and 360 degrees in a circle. Today, 
+the Hindu-Arabic numeral system (\gls{base-10}) is the most commonly used system globally. However,  
+the binary numeral system (\gls{base-2}) is used in almost all computers and electronic devices because it 
+is easier to implement efficiently in electronic circuits. 
+
+\begin{figure}[b]\centering
+    \begin{tabular}{rcccccccccc}
+        Western Arabic & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+        Eastern Arabic & \textarab{0} & \textarab{1} & \textarab{2} & \textarab{3} & \textarab{4} & \textarab{5} & \textarab{6} & \textarab{7} & \textarab{8} & \textarab{9} \\
+        East Asian & \CJKnumber{0} & \CJKnumber{1} & \CJKnumber{2} & \CJKnumber{3} & \CJKnumber{4} & \CJKnumber{5} & \CJKnumber{6} & \CJKnumber{7} & \CJKnumber{8} & \CJKnumber{9} \\
+    \end{tabular}
+    \caption{Many cultures use \gls{base-10} for arithmetic, differing only by the symbol used to represent each digit. Numerals used in Western culture are 
+    formally called Western Arabic numerals\label{fig:base10}}
+\end{figure}
+
+\section{Base-2\label{sec:data:bases}}
+
+The modern binary number system was studied in Europe in the 16th and 17th centuries by Thomas 
+Harriot, Juan Caramuel y Lobkowitz, and Gottfried Leibniz. However, systems related to binary 
+numbers have appeared earlier in multiple cultures including ancient Egypt, China, and India. 
+Leibniz was specifically inspired by the \textit{I Ching}, a classical Chinese text from the 9th century BCE. 
+
+You can think of a number base as the way to represent a number. The value of the number does not 
+change when transitioning between number bases. Most people use a \gls{base-10}, also known as decimal.
+While symbols may change for each digit, the intrinsic value of a number remains the same (see Figure \ref{fig:base10}). 
+For example, 667 is a decimal number. When you work problems that have numbers of different bases, 
+write the number in subscript to avoid confusion, for example: $667_{10}$ the number 667 written in 
+decimal. Binary numbers are \gls{base-2}. $667_{10}$ in \gls{base-2} is representated as $1010011011_2$. 
+
+When spoken, binary numerals are usually read digit-by-digit, in order to distinguish them from 
+decimal numerals. For example, $1010011011_2$ is pronounced \textit{one zero one zero zero one 
+one zero one one}. It would be confusing to refer to the number as \textit{one billion ten million 
+eleven thousand and eleven} which represents a different value. Note that the number base should 
+not change the value of a number.
+
+The order of the digits in a binary number represents their power of two. The right-most digit is 
+called the \gls{lsb} represents the power of $2^0$. The left-most digit is called 
+the \gls{msb} represents the power of $2^{n-1}$ where $n$ is the length of the 
+sequence. For example, with $1010011011_2$ the LSB is 1, representing $2^0$, and the MSB is $2^9$ 
+because the sequence is 10 bits long. 
+
+Counting from $n-1$ to zero, if you have a sequence of numbers $m = a_{n-1}a_{n-2}a_{n-3}...a_2a_1a_0$ 
+where $a_{n-1}$ is the \gls{msb} and $a_0$ is the \gls{lsb}, you can obtain the value of this number 
+by summing up powers of two:
+
+\begin{equation}\label{eq:base2}
+    m = \sum_{i=0}^{n-1} a_i \times 2^i
+\end{equation}
+
+\begin{figure}[h!]
+    \example{Convert $1010011011_2$ to decimal by expanding the powers of two. The most straightforeward %
+    way to convert this number is to expand it in of powers following Equation \ref{eq:base2}:%
+    %
+    \begin{equation}\label{sec:data:bases:667bin}%
+        1 \times 2^9 + 0 \times 2^8 + 1 \times 2^7 + 0 \times 2^6 + 0 \times 2^5 + 1 \times 2^4 
+        + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0
+    \end{equation}%
+    Note that we write out all powers of two starting with $n-1$. In this case $n=10$ because there %
+    ten digits. Begining with the \acrshort{msb} and ending with the \acrshort{lsb} copy 0 or 1 %
+    based on the corresponding digit in the binary representation of the number. This may seem cumbersome %
+    but after some time you will memorize the powers of 2 and it will become easier.}
+\end{figure}
+
+Expanding the number in terms of powers of two is the simplest way to convert a decimal number %
+to binary (such as in Equation \ref{sec:data:bases:667bin}). An easier way is to prepare a table with the %
+power of two that is just less than the magnitude of the number you are converting. For $667_{10}$, this is %
+$512_{10}$ or $2^9$:
+
+\vspace{1em} %
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|}\hline
+Power & $2^9$ & $2^8$ & $2^7$ & $2^6$ & $2^5$ & $2^4$ & $2^3$ & $2^2$ & $2^1$ & $2^0$ \\\hline\hline
+Decimal & 512 & 256 & 128 & 64 & 32 & 16 & 8 & 4 & 2 & 1 \\\hline
+Digit &  &  &  &  &  &  &  &  &  &  \\\hline
+\end{tabular}
+\vspace{1em}
+
+Start from left to right. If you can subtract the number without it becoming negative, indicate 1 for the digit. %
+Then, carry out the subtraction and use this new value for the next column. If you cannot carry out the subtraction % 
+without the number becoming negative, skip to the next column. Repeat this procedure for the next column. %
+$667-512=155$, so we can indeed subtract $512_2$ from $667_2$. We can note 1 in the digit, and use the value of $155$ %
+for the next column. $155-256<0$. We cannot subtract without the number becoming negative, so we note 0 as the digit %
+for this current column. However, $155-128=27$. So we can note 1 in the digit for this next column. And so on until %
+the last digit. If you have any remaining value beyond the right-most column you have made a mistake, check your work. %
+
+\vspace{1em} %
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|}\hline
+Power & $2^9$ & $2^8$ & $2^7$ & $2^6$ & $2^5$ & $2^4$ & $2^3$ & $2^2$ & $2^1$ & $2^0$ \\\hline\hline
+Decimal & 512 & 256 & 128 & 64 & 32 & 16 & 8 & 4 & 2 & 1 \\\hline
+Digit & 1 & 0 & 1 & 0 & 0 & 1 & 1 & 0 & 1 & 1 \\\hline
+\end{tabular}
+\vspace{1em}
+
+\subsection{Divide-by-2\label{sec:numbers:divideby2}}
+
+There is a more formal way to carry out this procedure, called the \textbf{divide-by-2} method. Essentially, with the previous 
+algorithm the digit column is noting if there would be a remainder when carrying out integer division by its respective power of 2. 
+An alternative way to convert the number is as follows.
+
+Start with the number you want to convert. Perform an integer division by 2. Note that an integer division does not produce a fractional
+ result. It should produce an integer and a remainder if the divisor cannot cleanly divide the dividend. Write the remainder to the 
+ right of the calculation, and write the result \textit{below} your calculation. Continue dividing by 2 until you reach a dividend of 1. 
+ The binary representation of the number is read from top-to-bottom of the remainder values.
+
+\section{Generalized Number Bases\label{sec:numbers:bases}}
+
+\Gls{base-10} and \gls{base-2} are not the only number bases. The base of a number can be any 
+integer. Some cultures measure units in dozens, or base-12. Hours are measured in base-12 or 
+base-24 depending on which country you are in; minutes, base-60. Other common bases used in computing are \gls{base-8} and 
+\gls{base-16}. \Gls{base-8} is used in Unix system permissions to represent the permissions of
+different user classes. \Gls{base-16} is used to compactly represent binary numbers to 
+reduce human error when reading, understanding or copying data.
+
+The equation defining expansions of \gls{base-2} can be generalized to any base $b$. Counting from $n-1$ 
+to zero, if you have a sequence of numbers $m = a_{n-1}a_{n-2}a_{n-3}...a_2a_1a_0$ 
+where $a_{n-1}$ is the \gls{msb} and $a_0$ is the \gls{lsb}, you can obtain the value of this number 
+by summing up powers of $b$:
+%
+\begin{equation}\label{eq:basen}
+    m = \sum_{i=0}^{n-1} a_i \times b^i
+\end{equation}
+%
+Furthermore the divide-by-2 algorithm can be generalized as a divide-by-$n$ algorithm if you divide by $n$ rather than 2.
+
+\begin{figure}[h]
+    \example{How many donuts are in a box of twelve dozen donuts? \textit{Assuming that one means
+    that there are $12_{12}$ donuts and not being redundant or $12 \times 12$ donuts.} %
+    \begin{align*} %
+        m & = \sum_{i=0}^{n-1} a_i \times 12^i \\
+        m & = 1 \times 12^1 + 2 \times 12^0  \\
+        m & = 12 + 2 =  14 \\
+    \end{align*}%
+    There are $14_{10}$ donuts in a box of $12_{12}$ donuts. 
+    }
+\end{figure}
+
+\subsection{Octets}
+
+File permissions on Unix-like file systems are defined in the POSIX.1-2017 standard. There 
+are three types of users, called classes: user, group, and others. Further, each class of user can 
+read ($r$), write ($w$) or execute a file ($x$). Each permission (read, write, execute) is binary. 
+You can or cannot perform the action. If you order them ($rwx$) as a bit string the number can 
+encode the specific combination of allowed/disallowed priveledges. Continuing with the example, 
+$r\neg w \neg x = 100_2 = 4_{8}$. Allowing all priveledges can be encoded 
+as $111_2 = 7_{8}$.  Allowing none would be the deassertion of all bits or $0$.
+
+There are a maximum of 8 combinations (remember to include 0), thus it is a 
+\gls{base-8} system. In practice it is called an octet. This system is not used for arithmetic. Rather,
+the number is used as a category to indicate the permissions for a class. Each binary digit encodes 
+the permissions in the order given above (read, write and execute). Because there are three classes, 
+Unit-like permissions are given with three octets. For example, $777_8$ allows all permissions 
+for all user classes.
+
+\begin{figure}[h]
+    \example{Serving files for the Internet requires special permissions. The user should be allowed read %
+    and write files, but group and others should only be allowed to read files. For folders, the user should %
+    be allowed all permissions. But, group and others should only be allowed to execute the folder. Give %
+    the octets for the files and folders for serving files to the Internet. \\\\%
+    %
+    The order of classes is user, group and others. The user can read and write files, but not execute them. %
+    This is defined as $110_2 = 6_8$. Group and others can only read the files but not write or execute them. %
+    This is defined as $010_2 = 4_8$. Thus, the octet we need for files on a web server is $644_8$. \\\\%
+    %
+    For folders, the user has all priveledges. We know this is $7_8$. However, group and others can only %
+    execute the folder. This is defined as $001_2 = 1_8$. The octet we need for folders on the web server is %
+    $711_8$.
+    }
+\end{figure}
+
+\begin{figure}[h]
+    \example{In binary, the octet of permissions for a Unix file is $111111100_2$. What can each group %
+    do with this file? The first octet or three bits are the user permissions. $111_2 = 7_8$, so the user %
+    who owns the file can do anything with it--similarly for the group. However, the last three bits are %
+    $100_2 = 4_8$. So others can only read the file. %
+    }
+\end{figure}
+
+\vfill\clearpage
+\section*{Homework Questions}
+
+\small
+\begin{multicols*}{2}
+   \begin{enumerate}[label=\thechapter.\arabic*]
+    \item Conduct a search on the historical basis for binary numbers before they were used in %
+    computing and explain how they were used by society.
+    \item Explain in your own words the following concepts:
+    \begin{enumerate}
+        \item Most significant bit
+        \item Least significant bit
+        \item The largest unsigned number that can be stored in $n$ bits.
+    \end{enumerate}
+    \item Define the divide-by-2 method in pseudo-code.
+    \item What is the largest unsigned number that can be stored in the following data types?
+    \begin{enumerate}
+        \item \texttt{char}
+        \item 2-byte \texttt{int}
+        \item 48-bit integer
+    \end{enumerate}
+    \item Convert the following decimal numbers to binary:
+    \begin{multicols*}{2}
+        \begin{enumerate}
+            \item 0
+            \item 1
+            \item 23
+            \item 59
+            \item 100
+            \item 1200
+            \item 1092
+            \item 1000000
+        \end{enumerate}
+    \end{multicols*}
+    \item Convert the following binary numbers to decimal using the table method:\label{hw:tablemethod}
+    \begin{enumerate}
+        \item 0
+        \item 1
+        \item 1010
+        \item 1111
+        \item 1110101
+        \item 1010100101
+        \item 1000000000
+        \item 1000100101
+    \end{enumerate}
+    \item Repeat Question \ref{hw:tablemethod} using the divide-by-2 method. 
+   \end{enumerate} 
+\end{multicols*}

@@ -1,0 +1,13 @@
+*.pdf
+*.log
+*.aux
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.fls
+*.ist
+*.fdb_latexmk
+bin/*
