@@ -1,10 +1,11 @@
-MAKER=xelatex 
+MAKER=xelatex
+FLAGS=-halt-on-error
 
-main.pdf: main.tex
-	${MAKER} main.tex
+main.pdf: main.tex chapters/number-bases.tex
+	${MAKER} ${FLAGS} $<
 	makeglossaries main
-	${MAKER} main.tex
-	${MAKER} main.tex
+	${MAKER} $<
+	${MAKER} $<
 
 clean:
 	rm -r -f *.aux *.log *.pdf

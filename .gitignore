@@ -7,3 +7,7 @@
 *.glg
 *.glo
 *.gls
+*.fls
+*.ist
+*.fdb_latexmk
+bin/*
