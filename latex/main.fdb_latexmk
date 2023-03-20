@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1678408531 "/home/albert/Documents/COMP-142-Textbook/latex/main.tex" "main.pdf" "main" 1678408531
+["pdflatex"] 1678826131 "/home/albert/Documents/COMP-142-Textbook/latex/main.tex" "main.pdf" "main" 1678826131
   "/etc/texmf/web2c/texmf.cnf" 1660942699 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/albert/Documents/COMP-142-Textbook/latex/main.tex" 1678408530 43818 757fb91cee52f016b5c7dba6ced44f63 ""
+  "/home/albert/Documents/COMP-142-Textbook/latex/main.tex" 1678826130 45731 d6d28b1f321b8ddf42ea32f94816175f ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr12.tfm" 1136768653 1288 655e228510b4c2a1abe905c368440826 ""
   "/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty" 1583617216 6501 4011d89d9621e0b0901138815ba5ff29 ""
@@ -127,8 +127,8 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1660942786 2798578 6d55697db9bf9ef583c02e97921fa935 ""
-  "main.aux" 1678408531 32 3985256e7290058c681f74d7a3565a19 ""
-  "main.tex" 1678408530 43818 757fb91cee52f016b5c7dba6ced44f63 ""
+  "main.aux" 1678826131 32 3985256e7290058c681f74d7a3565a19 ""
+  "main.tex" 1678826130 45731 d6d28b1f321b8ddf42ea32f94816175f ""
   (generated)
   "main.log"
   "main.pdf"
