@@ -1,0 +1,150 @@
+
+\newacronym{msb}{MSB}{most significant bit}
+\newacronym{lsb}{LSB}{least significant bit}
+\newacronym{ip}{IP}{instruction pointer}
+\newacronym{risc}{RISC}{reduced instruction set computer}
+\newacronym{cisc}{CISC}{complex instruction set computer}
+\newglossaryentry{overflow}{name=overflow,description={%
+    Exceeding the capacity of a binary number with fixed number of digits
+}}
+\newglossaryentry{unsigned}{name=unsigned,description={%
+    A data type that allows for only positive numbers or operation that assumes the operands are positive numbers
+}}
+\newglossaryentry{von Neumann architecture}{name=von Neumann architecture,description={%
+    An electronic digital computer possessing an arithmetic logic unit, a control unit, memory, input and output
+}}
+\newglossaryentry{arithmetic logic unit}{name={arithmetic logic unit},%
+    description={The component of a microprocessor responsible for computing arithmetic},%
+    first={\glsentryname{arithmetic logic unit} (ALU)}
+}
+\newglossaryentry{register}{name={register},%
+    description={Fast temporary storage physically located on the microprocessor}
+}
+\newglossaryentry{control unit}{name={control unit},%
+    description={The component of a microprocessor that controls the operation of the microprocessor}
+}
+\newglossaryentry{instruction register}{name={instruction register},%
+    description={A register in the microprocessor that holds the value of the current instruction}
+}
+\newglossaryentry{instruction pointer}{name={instruction pointer},%
+    description={A register in the microprocessor that holds the address of the next instruction to be executed},%
+    first={\glsentryname{instruction pointer} (IP)}
+}
+\newglossaryentry{Harvard architecture}{name={Harvard architecture},%
+    description={A model for computing that differs from the von Neumann architecture by distinguishing between instruction memory and data memory}
+}
+\newglossaryentry{cache}{name={cache},%
+    description={An intermediate memory structure between the memory and the microprocessor designed to improve the speed of memory operations}
+}
+\newglossaryentry{reduced instruction set computer}{name={RISC},%
+    description={A simple microprocessor where instructions generally perform only singular actions resulting in a smaller instruction set},%
+    first={reduced instruction set computer (RISC)}
+}
+\newglossaryentry{complex instruction set computer}{name={CISC},%
+    description={A complicated type of microprocessor with a large instruction set where a single instruction may be capable of performing multiple operations at once},%
+    first={complex instruction set computer (CISC)}
+}
+\newglossaryentry{load-and-store}{name={load-and-store architecture},%
+    description={A type of architecture where memory operations are distinct from other types of operations}
+}
+\newglossaryentry{register-memory}{name={register-memory architecture},%
+    description={A type of architecture where operations can reference memory without need of additional memory operations}
+}
+\newglossaryentry{aarch64}{name={ARM64},%
+    description={The 64-bit extension of the Advanced/Acorn RISC machine (ARM) architecture family, also known as ARM64},%
+    first={Acorn RISC Machine (ARM64)}
+}
+\newglossaryentry{x64}{name={AMD64},%
+    description={The 64-bit extension of the x86-architecture, backward compatible with x86, also known as x86-64}
+}
+\newglossaryentry{x86}{name={x86},%
+    description={The 32-bit version of the x86-architecture, sometimes written as x86-32}
+}
+\newglossaryentry{isa}{name={ISA},%
+    description={Instruction set architecture. The term for a specific microprocessor design, and its set of instructions},%
+    first={instruction set architecture (ISA)}
+}
+\newglossaryentry{edvac}{name={EDVAC},%
+    description={Electronic Discrete Variable Automatic Computer, one of the earliest electronic computers},%
+    first={Electronic Discrete Variable Automatic Computer (EDVAC)}
+}
+\newglossaryentry{control of flow}{name={control of flow},%
+    description={A type of operation that causes the microprocessor to execute some other instruction, other than the next one}
+}
+\newglossaryentry{ia64}{name={IA-64},%
+    description={An instruction set architecture originally developed by HP and proposed as a 64-bit alternative to x86 by Intel},%
+    first={Itanium (IA-64)}%
+}
+\newglossaryentry{calling convention}{name={calling convention},%
+    description={A set of requirements based on the operating system and ISA defining standards for how to use the registers and stack}
+}
+\newglossaryentry{temporal locality}{name={temporal locality},%
+    description={The concept that if a value from memory is accessed it has a high probability of being accessed again}
+}
+\newglossaryentry{dram}{name={DRAM},%
+    description={Dynamic random access memory, a simple type of memory technology that has difficulties with random access},%
+    first={dynamic random access memory (DRAM)}%
+}
+\newglossaryentry{sram}{name={SRAM},%
+    description={Static random access memory, a fast but comparatively expenstive type of memory technology}
+}
+\newglossaryentry{sp}{name={SP},%
+    description={Stack pointer, pointing the the next available space on the stack},%
+    first={stack pointer (SP)}
+}
+\newglossaryentry{fp}{name={FP},%
+    description={Frame pointer, pointing the the procedure call's current frame},%
+    first={frame pointer (FP)}
+}
+\newglossaryentry{reference zero}{name={reference zero},
+    description={A special register that will be read as zero when used as an operand, or will throw away the result if used as a destination}
+}
+\newglossaryentry{ra}{name={RA},%
+    description={The return address, points to where a procedure call should return on completion},%
+    first={return address (RA)}
+}
+\newglossaryentry{callee}{name={callee},%
+    description={When a subroutine calls another subroutine, the callee is the subroutine that has been called}
+}
+\newglossaryentry{caller}{name={caller},%
+    description={When a subroutine calls another subroutine, the caller is the subroutine initating the call}
+}
+\newglossaryentry{powerpc}{name={PowerPC},%
+    description={A microprocessor made by IBM briefly used as the microprocessor for Macintosh computers}
+}
+\newglossaryentry{intel}{name={Intel},%
+    description={A semiconductor manufacturer, developed the x86 ISA}
+}   
+\newglossaryentry{amd}{name={AMD},%
+    description={Advanced Micro Devices, a semiconductor manufacturer, developed the AMD64 ISA}
+}
+\newglossaryentry{stored program computer}{name={stored program computer},%
+    description={A system that executes programs in memory, in contrast to computers designed to execute fixed programs}
+}
+\newglossaryentry{floating point unit}{name={FPU},%
+    description={A special purpose ALU that operates on floating-point values},%
+    first={floating point unit (FPU)}
+}
+\newglossaryentry{gpu}{name={GPU},%
+    description={A special purpose ALU optimized for executing math operations commonly used in computer graphics applications},%
+    first={graphics processing unit (GPU)}
+}
+\newglossaryentry{opcode}{name={opcode},%
+    description={Input to the ALU description the type of operation to be carried out},%
+    first={operation code, also known as opcode,}
+}
+\newglossaryentry{sign and magnitude}{name={sign and magnitude},%
+    description={A format for storing positive and negative binary numbers that uses a bit to indicate if the number is positive or negative}
+}
+\newglossaryentry{floating point number}{name={floating point number},%
+    description={A method for storing fractional numbers in binary similar to scientific notation}
+}
+\newglossaryentry{magnitude}{name={magnitude},%
+    description={The absolute value of a number}
+}
+\newglossaryentry{base-10}{name={base-10},%
+    description={Base-10 numbering system also known as decimal, Hindu-Arabic or Western Arabic}
+}
+\newglossaryentry{base-2}{name={base-2},%
+    description={Base-2 numbering system also known as binary}
+}
