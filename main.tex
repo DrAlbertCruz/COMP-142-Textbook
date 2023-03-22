@@ -28,6 +28,15 @@
     }
 }
 
+\newcommand*{\lemma}[1]{\noindent
+    \colorbox{green!10}{\noindent
+        \begin{minipage}{\textwidth}
+            \textbf{Lemma \thechapter.\arabic{examples}}\stepcounter{lemma}
+            #1
+        \end{minipage}
+    }
+}
+
 \newcommand*{\myaside}[2]{\noindent
     \colorbox{red!10}{\noindent
         \begin{minipage}{\textwidth}
@@ -39,7 +48,9 @@
 
 \begin{document}
 
+
 \newcounter{examples}{1}
+\newcounter{lemma}{1}
 
 \section{Preface\label{sec:preface}}
 
@@ -70,21 +81,20 @@ The general topics covered by the class are:
 
 \chapter{Signed Data}
 
-In mathematics, negative number represents an opposite. In the real number system, a negative number is a number that is 
-less than zero. Negative numbers are often used to represent the magnitude of a loss or deficiency. Negative 
-numbers are used to describe values on a scale that goes below zero, such as the Celsius and Fahrenheit scales for 
-temperature. The laws of arithmetic for negative numbers ensure that the common-sense idea of an opposite is reflected 
-in arithmetic. For example, $-(-3) = 3$ because the opposite of an opposite is the original value.
+A negative number is a number that is less than zero. Negative numbers are used to describe 
+values on a scale that goes below zero, such as the Celsius and Fahrenheit scales for 
+temperature. The laws of arithmetic for negative numbers ensure that the common-sense idea 
+of an opposite is reflected in arithmetic. For example, $-(-3) = 3$ because the opposite of 
+an opposite is the original value.
 
-Negative numbers are usually written with a minus sign in front. For example, -3 represents a negative quantity with a 
-magnitude of three, and is pronounced ``minus three'' or ``negative three.'' Conversely, a number that is greater than 
-zero is called positive; zero is usually (but not always) thought of as neither positive nor negative. The positivity 
-of a number may be emphasized by placing a plus sign before it, e.g. $+3$. In general, the negativity or positivity of 
-a number is referred to as its sign.
-
-Every real number other than zero is either positive or negative. The non-negative whole numbers are referred to as 
-natural numbers (i.e., 0, 1, 2, 3...), while the positive and negative whole numbers (together with zero) are 
-referred to as integers. 
+Negative numbers are usually written with a minus sign in front. For example, -3 represents a 
+negative quantity with a magnitude of three, and is pronounced ``minus three'' or ``negative 
+three.'' Conversely, a number that is greater than zero is called positive; zero is usually 
+(but not always) thought of as neither positive nor negative. The positivity of a number may 
+be emphasized by placing a plus sign before it, e.g. $+3$. In general, the negativity or 
+positivity of a number is referred to as its sign. %
+%
+Every real number other than zero is either positive or negative. 
 
 It has been proposed that negative numbers were used on the Greek counting table at Salamis, known as the Salamis Tablet, 
 dated to 300 BC. Negative numbers were also used in the Nine Chapters on the Mathematical Art, which in its present form 
@@ -96,14 +106,14 @@ subtracting and multiplying negative numbers and solved problems with negative c
 In computing, signed number representations are required to encode negative numbers in binary number systems. In 
 mathematics, negative numbers in any base are represented by prefixing them with a minus sign. However, in memory, 
 numbers are represented only as sequences of bits, without extra symbols. The three best-known methods of extending the 
-binary numeral system to represent signed numbers are: sign and magnitude, and one's complement, two's complement. Most 
-modern computing systems use Two's compliment for integer math and sign and magnitude for fractional numbers to be 
-discussed later. 
+binary numeral system to represent signed numbers are: sign and magnitude, one's complement, and two's complement. Most 
+modern computing systems use two's compliment for integer math, and sign and magnitude for fractional numbers--%
+discussed in a later chapter. 
 
 \section{Sign and Magnitude\label{sec:signmag}}
 
-In the \gls{sign and magnitude} representation, also called signed magnitude, a signed number is represented by the bit 
-pattern corresponding to the sign of the number for the sign bit, and the \gls{magnitude} of the number for the remaining %
+In the \gls{sign and magnitude} representation, also called signed magnitude, a signed number is represented by a single bit 
+corresponding to the sign of the number (called the sign bit), and the \gls{magnitude} of the number for the remaining %
 bits. For example, in an eight-bit representation, suppose we define a standard where only seven bits represent the magnitude, 
 which can range from $0000000_2$ to $1111111_2$. Thus, numbers ranging from $-12710_{10}$ to $+12710_{10}$ can be represented 
 once the sign bit (the eighth bit) is added. For example, $-4310_{10}$ encoded in an eight-bit byte is $10101011_2$ while 
@@ -126,18 +136,27 @@ are use a binary form of scientific notation %
  use the arithmetic algorithm, and there would be no additional penalty to using sign and magnitude to encode 
 negative values. 
 
-\begin{figure}[h!]
-    \example{%
-        Suppose that we have a 32-bit \texttt{int} in C-language. If you use sign and magnitude, what is the maximum % 
-        and minimum value you can store in this format? % 
-        We must select a bit to be used as the sign. Most systems use the \gls{msb}. This means we have 31 total bits  %
-        for the magnitude of the number. The maximum value of an unsigned binary number is $2^n-1$. $n=31$ therefore %
-        $2^31-1=2147483647$ is the largest number that can be stored in 31 bits. This representation can hold values %
-        between $+2147483647_{10}$ to $-2147483647_{10}$. %
+\begin{figure}[ht]
+    \lemma{%
+        Assume that an integer is stored in $m$ bits. One bit is required to be the sign bit. Thus, the magnitude %
+        must be represented in $m - 1$ bits. We know that the greatest number that can be stored in $n$ bits is %
+        $2^{n}-1$, therefore the greatest magnitude that can be stored in a sign and magnitude notation is $2^{m-1}-1$.%
     }
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[ht]
+    \example{%
+        Suppose that we have a 32-bit \texttt{int} in C-language. If you use sign and magnitude, what is the maximum % 
+        and minimum value you can store in this format? % 
+        %We must select a bit to be used as the sign. Most systems use the \gls{msb}. %
+        The greatest magnitude that can be stored in a sign and magnitude nubmer is $2^{m-1}-1$. With $m=32$, this evaluates as %
+        $2^{31}-1=2147483647$. %
+        It can be either positive or negative so the maximum and minimum values are %
+        $2147483647$ and $-2147483647$. %
+    }
+\end{figure}
+
+\begin{figure}[ht]
     \example{%
         The purpose of this example is to demonstrate that sign and magnitude will fail if you attempt to perform %
         arithmetic on it as-is. Add -2 and 4 in sign and magnitude using an 8-bit representation. We will assume %
@@ -152,6 +171,31 @@ negative values.
         Indeed, $0000110_2=6_{10}$ so the result is $-6_{10}$.% 
     }
 \end{figure}
+
+\section{Ones' Compliment\label{sec:ones}}
+
+The \gls{ones compliment} of a binary number is the value obtained by negating the bits in the binary representation of %
+the number (swapping 0s and 1s). The name ``ones' complement'' (note this is possessive of the plural ``ones'', not of a %
+singular ``one'') refers to the fact that such an inverted value, if added to the original, would always produce an ``all %
+ones'' number. The term ``complement'' refers to such pairs of mutually additive inverse numbers, here in respect to a %
+non-0 base number. 
+
+Many early computers, including the UNIVAC 1101, CDC 160, CDC 6600, the LINC, the PDP-1, and the UNIVAC 1107, used ones' 
+complement arithmetic. Successors of the CDC 6600 continued to use ones' complement arithmetic until the late 1980s, and 
+the descendants of the UNIVAC 1107 (the UNIVAC 1100/2200 series) still do, but the majority of modern computers use two's 
+complement. 
+
+\begin{figure}[ht]
+    \lemma{%
+        Assume that an integer is stored in $m$ bits. One bit is required to be the sign bit. Thus, the magnitude %
+        must be represented in $m - 1$ bits. We know that the greatest number that can be stored in $n$ bits is %
+        $2^{n}-1$, therefore the greatest magnitude that can be stored in a sign and magnitude notation is $2^{m-1}-1$.%
+    }
+\end{figure}
+
+An N-bit ones' complement numeral 
+system can only represent integers in the range −(2N−1−1) to 2N−1−1 It is one of three common representations for 
+negative integers in binary computers, along with two's complement and sign-magnitude.
 
 \chapter{Microprocessor Architecture}
 
@@ -219,7 +263,8 @@ There are other architecture designs such as the \gls{Harvard architecture} whic
 memory for data and instructions. It called for separate busses to access instructions and data. However, 
 the vast majority of microprocessors developed in the 21st century have followed the \gls{von Neumann architecture}. %
 %
-%To somewhat complicate matters, modern microprocessors include a \gls{cache} to speed up memory operations.
+%To somewhat
+ complicate matters, modern microprocessors include a \gls{cache} to speed up memory operations.
 %Current \gls{cache} models separate instructions from data, leading to designs that distinguish between 
 %memory for instructions or data. The lines between the \gls{von Neumann architecture} and 
 %\gls{Harvard architecture} may be a bit blurred.
@@ -330,7 +375,8 @@ programmer.
 
 \subsection{Reduced Instruction Set Computing (RISC)\label{sec:alu:risc}}
 
-In the past, there was a need to distinguish between two different types of \glspl{isa}: \gls{reduced instruction set computer} and  
+In the past, there was a need to distinguish between two different types of \glspl{isa}: %
+\gls{reduced instruction set computer} and  %
 \gls{complex instruction set computer}. A \gls{reduced instruction set computer} is a computer 
 architecture designed %
 to simplify the individual instructions given to the computer to accomplish tasks. Compared to the 

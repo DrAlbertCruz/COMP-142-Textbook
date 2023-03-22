@@ -128,13 +128,25 @@ Digit & 1 & 0 & 1 & 0 & 0 & 1 & 1 & 0 & 1 & 1 \\\hline
 \subsection{Divide-by-2\label{sec:numbers:divideby2}}
 
 There is a more formal way to carry out this procedure, called the \textbf{divide-by-2} method. Essentially, with the previous 
-algorithm the digit column is noting if there would be a remainder when carrying out integer division by its respective power of 2. 
-An alternative way to convert the number is as follows.
+algorithm the digit column notes if there would be a remainder when carrying out integer division by its respective power of 2. 
+Another way to convert the number is as follows.
 
-Start with the number you want to convert. Perform an integer division by 2. Note that an integer division does not produce a fractional
- result. It should produce an integer and a remainder if the divisor cannot cleanly divide the dividend. Write the remainder to the 
- right of the calculation, and write the result \textit{below} your calculation. Continue dividing by 2 until you reach a dividend of 1. 
- The binary representation of the number is read from top-to-bottom of the remainder values.
+Start with the number. Perform an integer division by 2. An integer division does not produce a fractional result. It should produce an integer and a remainder if the divisor cannot cleanly divide the dividend. Write the remainder to the right of the calculation, and write the result as the dividend of your next calculation. Continue dividing by 2 until you reach a dividend of 1--the operation $1 \div 2$ will be the last step. The binary representation of the number is read from top-to-bottom of the remainder values.
+
+\begin{align*}
+	667 \div 2 = 333  	& R 1 \\
+	333 \div 2 = 166 	& R 1 \\
+	166 \div 2 = 83 	& R 0 \\
+	83  \div 2 = 41 	& R 1 \\
+	41	\div 41 = 20 	& R 1 \\
+	20 \div 2 = 10 		& R 0 \\
+	10 \div 2 = 5 		& R 0 \\
+	5 \div 2 = 2 		& R 1 \\
+	2 \div 2 = 1 		& R 0 \\
+	1 \div 2 = 1		& R 1
+\end{align*}
+
+$667 \div 2$ has a remainder of 1 because it is odd, so write this to the right of the division (R 1), and write the result, $333$ below as the dividend of the new operation. Repeat this step. $333 \div 2$ also has a remainder of 1, and its result is 166. $166$ is even and has a remainder of 0. And so on until we reach $2 \div 1$.To obtain the answer read from the top down. The bottom digit is the LSB and the top digit is the MSB. The result is $1101100101_2$ which is consistent with our previous examples.
 
 \section{Generalized Number Bases\label{sec:numbers:bases}}
 
