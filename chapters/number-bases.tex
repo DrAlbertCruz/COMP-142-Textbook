@@ -17,6 +17,27 @@ the Hindu-Arabic numeral system (\gls{base-10}) is the most commonly used system
 the binary numeral system (\gls{base-2}) is used in almost all computers and electronic devices because it 
 is easier to implement efficiently in electronic circuits. 
 
+Indian mathematicians are credited with developing \gls{base-10}, the Hindu-Arabic numeral system.
+Aryabhata of Kusumapura developed the place-value notation in the 5th century CE and a century later 
+Brahmagupta introduced the symbol for zero. The system slowly spread to other surrounding regions 
+like Arabia due to their commercial and military activities with India. Middle-Eastern mathematicians 
+extended the system to include negative powers of 10 (fractions), as recorded in a treatise by Syrian 
+mathematician Abu'l-Hasan al-Uqlidisi in 952-953 CE, and the decimal point notation was introduced by 
+Sind ibn Ali, who also wrote the earliest treatise on Arabic numerals. The Decimal numeral system then 
+spread to Europe due to merchants trading, and the digits used in Europe are called Western Arabic numerals, 
+as they learned them from the Arabs--though it was invented in India. 
+
+The simplest numeral system is the unary numeral system, in which every natural number is represented by 
+a corresponding number of symbols. Tally marks represent one such system still in common use. In Western 
+culture it is common to cross four tally marks every multiple of five. However, a cross still uses a line 
+and technically meets the requirements for a unary system. The unary system is only useful for small numbers, 
+and finds use in one data compression algorithm (Elias gamma encoding).
+
+More elegant is a positional system, also known as place-value notation. For example, in \gls{base-10}, ten 
+different digits 0, ..., 9 are used and the position of a digit is used to signify the power of ten that the 
+digit is to be multiplied with, as in $304 = 3 \times 100 + 0 \times 10 + 4 \times 1$. Zero, which is not 
+needed in the other systems, is of crucial importance here, in order to be able to skip a power.
+
 \begin{figure}[b]\centering
     \begin{tabular}{rcccccccccc}
         Western Arabic & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
@@ -119,10 +140,10 @@ Start with the number you want to convert. Perform an integer division by 2. Not
 
 \Gls{base-10} and \gls{base-2} are not the only number bases. The base of a number can be any 
 integer. Some cultures measure units in dozens, or base-12. Hours are measured in base-12 or 
-base-24 depending on which country you are in; minutes, base-60. Other common bases used in computing are \gls{base-8} and 
-\gls{base-16}. \Gls{base-8} is used in Unix system permissions to represent the permissions of
-different user classes. \Gls{base-16} is used to compactly represent binary numbers to 
-reduce human error when reading, understanding or copying data.
+base-24 depending on which country you are in; minutes, base-60. Other common bases used in 
+computing are \gls{base-8} and \gls{base-16}. \Gls{base-8} is used in Unix system permissions 
+to represent the permissions of different user classes. \Gls{base-16} is used to compactly 
+represent binary numbers to reduce human error when reading, understanding or copying data.
 
 The equation defining expansions of \gls{base-2} can be generalized to any base $b$. Counting from $n-1$ 
 to zero, if you have a sequence of numbers $m = a_{n-1}a_{n-2}a_{n-3}...a_2a_1a_0$ 
@@ -142,6 +163,18 @@ Furthermore the divide-by-2 algorithm can be generalized as a divide-by-$n$ algo
         m & = \sum_{i=0}^{n-1} a_i \times 12^i \\
         m & = 1 \times 12^1 + 2 \times 12^0  \\
         m & = 12 + 2 =  14 \\
+    \end{align*}%
+    There are $14_{10}$ donuts in a box of $12_{12}$ donuts. 
+    }
+\end{figure}
+
+\begin{figure}[h]
+    \example{Convert the tally marks llll to decimal using Equation \ref{eq:basen}. %
+    Unary numbering systems can be thought of as base-1.
+    \begin{align*} %
+        m & = \sum_{i=0}^{n-1} a_i \times 1^i \\
+        m & = 1 \times 1^3 + 1 \times 1^2 + 1 \times 1^1 + 1 \times 1^0  \\
+        m & = 1 + 1 + 1 + 1 = 4 \\
     \end{align*}%
     There are $14_{10}$ donuts in a box of $12_{12}$ donuts. 
     }
@@ -187,6 +220,25 @@ for all user classes.
     $100_2 = 4_8$. So others can only read the file. %
     }
 \end{figure}
+
+\subsection{Hexadecimal\label{sec:numbers:bases:hex}}
+
+
+The hexadecimal (also \gls{base-16} or simply hex) numeral system is a positional numeral system that 
+represents numbers using a base of 16. Unlike the decimal system representing numbers using 10 symbols, hexadecimal uses 16 distinct symbols, most often the symbols 0-9 to represent values 0-9, and A-F to 
+represent values from 10 to 15. 
+
+\Gls{base-16} was used in the early 20th century as traditional units of weight in China. %
+Currently, software developers and system designers widely use hexadecimal numbers because they provide a human-
+friendly representation of binary-coded values. Each hexadecimal digit `represents four bits (binary digits), 
+also known as a \gls{nibble}. For example, a 4-bit nibble can have values ranging from 0000 to 1111 in 
+binary form, which can be conveniently represented as 0 to F in hexadecimal.
+
+As discussed, a subscript is typically used to specify the base. For example, the decimal value $54,076_{10}$
+would be expressed in hexadecimal as $D33C16_{16}$. In programming, a number of notations are used to denote
+hexadecimal numbers, usually involving a prefix. The prefix \texttt{0x} is used in C language, which would 
+denote this value as \texttt{0xD33C}.
+
 
 \vfill\clearpage
 \section*{Homework Questions}

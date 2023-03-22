@@ -95,11 +95,13 @@ In later sections we will discuss how this is used by the microprocessor to comp
 
 \section{Bit Organization\label{sec:data:bits}}
 
-Long sequences of bits can be difficult to understand. One method for aggregating \gls{base-2} was covered (hexadecimal). 
+Long sequences of bits can be difficult to understand. There are circumstances where programmers must 
+modify data at the bit level. Doing so bit by bit would be tedious. One method for aggregating \gls{base-2} was covered (hexadecimal). 
 Another method groups numbers into units, similarly to measurement units. For example, in English units one yard is 
 three feet, and one foot is twelve inches. There is a similar system for organizing bits. The most common method is 
-a byte. A byte is eight bits and abbreviated with a capital B. Bytes are abbreviated with decimal metric prefixes. For 
-example, 1 KB is 1,000 bytes or 8,000 bits.
+a byte. A byte is eight bits and abbreviated with a capital B. Large amounts of bytes are abbreviated with decimal metric prefixes. For 
+example, 1 KB is 1,000 bytes or 8,000 bits. One hexadecimal digit corresponds to four bits, so a single byte can
+be cleanly represented by two hexadecimal digits.
 
 It is sometimes necessary to specify a chunk of data greater than a byte. This chunk is formally called a word. The 
 length of a word varies from system to system. For example, the PlayStation 2's MIPS microprocessor had a word length of 
