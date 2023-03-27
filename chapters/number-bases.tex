@@ -17,18 +17,8 @@ the Hindu-Arabic numeral system (\gls{base-10}) is the most commonly used system
 the binary numeral system (\gls{base-2}) is used in almost all computers and electronic devices because it 
 is easier to implement efficiently in electronic circuits. 
 
-Indian mathematicians are credited with developing \gls{base-10}, the Hindu-Arabic numeral system.
-Aryabhata of Kusumapura developed the place-value notation in the 5th century CE and a century later 
-Brahmagupta introduced the symbol for zero. The system slowly spread to other surrounding regions 
-like Arabia due to their commercial and military activities with India. Middle-Eastern mathematicians 
-extended the system to include negative powers of 10 (fractions), as recorded in a treatise by Syrian 
-mathematician Abu'l-Hasan al-Uqlidisi in 952-953 CE, and the decimal point notation was introduced by 
-Sind ibn Ali, who also wrote the earliest treatise on Arabic numerals. The Decimal numeral system then 
-spread to Europe due to merchants trading, and the digits used in Europe are called Western Arabic numerals, 
-as they learned them from the Arabs--though it was invented in India. 
-
 The simplest numeral system is the unary numeral system, in which every natural number is represented by 
-a corresponding number of symbols. Tally marks represent one such system still in common use. In Western 
+a corresponding number of symbols. \Gls{tally marks} represent one such system still in common use. In Western 
 culture it is common to cross four tally marks every multiple of five. However, a cross still uses a line 
 and technically meets the requirements for a unary system. The unary system is only useful for small numbers, 
 and finds use in one data compression algorithm (Elias gamma encoding).
@@ -38,7 +28,18 @@ different digits 0, ..., 9 are used and the position of a digit is used to signi
 digit is to be multiplied with, as in $304 = 3 \times 100 + 0 \times 10 + 4 \times 1$. Zero, which is not 
 needed in the other systems, is of crucial importance here, in order to be able to skip a power.
 
-\begin{figure}[b]\centering
+Indian mathematicians are credited with developing \gls{base-10}.
+\gls{aryabhata} developed the place-value notation in the 5th century CE and a century later 
+\gls{brahmagupta} introduced the symbol for zero. The system slowly spread to other surrounding regions 
+like Arabia due to their commercial and military activities with India. Middle-Eastern mathematicians 
+extended the system to include negative powers of 10 (fractions), as recorded in a treatise by Syrian 
+mathematician \gls{abulhasan} in 952-953 CE, and the decimal point notation was introduced by 
+\gls{sindibnali}, who also wrote the earliest treatise on Arabic numerals. \Gls{base-10} then 
+spread to Europe due to merchants trading, and the digits used in Europe are called Western Arabic numerals, 
+as they learned them from the Arabs--though it was invented in India. 
+
+
+\begin{figure}[t]\centering
     \begin{tabular}{rcccccccccc}
         Western Arabic & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
         Eastern Arabic & \textarab{0} & \textarab{1} & \textarab{2} & \textarab{3} & \textarab{4} & \textarab{5} & \textarab{6} & \textarab{7} & \textarab{8} & \textarab{9} \\
@@ -53,13 +54,13 @@ needed in the other systems, is of crucial importance here, in order to be able 
 The modern binary number system was studied in Europe in the 16th and 17th centuries by Thomas 
 Harriot, Juan Caramuel y Lobkowitz, and Gottfried Leibniz. However, systems related to binary 
 numbers have appeared earlier in multiple cultures including ancient Egypt, China, and India. 
-Leibniz was specifically inspired by the \textit{I Ching}, a classical Chinese text from the 9th century BCE. 
+Leibniz was specifically inspired by the \gls{iching}, a classical Chinese text from the 9th century BCE. 
 
 You can think of a number base as the way to represent a number. The value of the number does not 
 change when transitioning between number bases. Most people use a \gls{base-10}, also known as decimal.
 While symbols may change for each digit, the intrinsic value of a number remains the same (see Figure \ref{fig:base10}). 
 For example, 667 is a decimal number. When you work problems that have numbers of different bases, 
-write the number in subscript to avoid confusion, for example: $667_{10}$ the number 667 written in 
+write the number in subscript to avoid confusion. For example $667_{10}$ is the number 667 written in 
 decimal. Binary numbers are \gls{base-2}. $667_{10}$ in \gls{base-2} is representated as $1010011011_2$. 
 
 When spoken, binary numerals are usually read digit-by-digit, in order to distinguish them from 
@@ -72,7 +73,8 @@ The order of the digits in a binary number represents their power of two. The ri
 called the \gls{lsb} represents the power of $2^0$. The left-most digit is called 
 the \gls{msb} represents the power of $2^{n-1}$ where $n$ is the length of the 
 sequence. For example, with $1010011011_2$ the LSB is 1, representing $2^0$, and the MSB is $2^9$ 
-because the sequence is 10 bits long. 
+because the sequence is 10 bits long. Generally, when performing operations on binary numbers the 
+\gls{lsb} of both operands must be aligned. By convention, it is on the right side.
 
 Counting from $n-1$ to zero, if you have a sequence of numbers $m = a_{n-1}a_{n-2}a_{n-3}...a_2a_1a_0$ 
 where $a_{n-1}$ is the \gls{msb} and $a_0$ is the \gls{lsb}, you can obtain the value of this number 
@@ -82,7 +84,7 @@ by summing up powers of two:
     m = \sum_{i=0}^{n-1} a_i \times 2^i
 \end{equation}
 
-\begin{figure}[h!]
+\begin{figure}[t]
     \example{Convert $1010011011_2$ to decimal by expanding the powers of two. The most straightforeward %
     way to convert this number is to expand it in of powers following Equation \ref{eq:base2}:%
     %
@@ -127,26 +129,63 @@ Digit & 1 & 0 & 1 & 0 & 0 & 1 & 1 & 0 & 1 & 1 \\\hline
 
 \subsection{Divide-by-2\label{sec:numbers:divideby2}}
 
-There is a more formal way to carry out this procedure, called the \textbf{divide-by-2} method. Essentially, with the previous 
+There is a more formal way to carry out this procedure, called the \gls{divide-by-2} method. Essentially, with the previous 
 algorithm the digit column notes if there would be a remainder when carrying out integer division by its respective power of 2. 
 Another way to convert the number is as follows.
 
-Start with the number. Perform an integer division by 2. An integer division does not produce a fractional result. It should produce an integer and a remainder if the divisor cannot cleanly divide the dividend. Write the remainder to the right of the calculation, and write the result as the dividend of your next calculation. Continue dividing by 2 until you reach a dividend of 1--the operation $1 \div 2$ will be the last step. The binary representation of the number is read from top-to-bottom of the remainder values.
+Start with the number. Perform an integer division by 2. An integer division does not produce a fractional result. It should 
+produce an integer and a remainder if the divisor cannot cleanly divide the dividend. Write the remainder to the right of the 
+calculation, and write the result as the dividend of your next calculation. Continue until the result is zero. The binary 
+representation of the number is read from top-to-bottom of 
+the remainder values.
 
 \begin{align*}
-	667 \div 2 = 333  	& R 1 \\
-	333 \div 2 = 166 	& R 1 \\
-	166 \div 2 = 83 	& R 0 \\
-	83  \div 2 = 41 	& R 1 \\
-	41	\div 41 = 20 	& R 1 \\
-	20 \div 2 = 10 		& R 0 \\
-	10 \div 2 = 5 		& R 0 \\
-	5 \div 2 = 2 		& R 1 \\
-	2 \div 2 = 1 		& R 0 \\
-	1 \div 2 = 1		& R 1
+	667 \div 2 = 333  	&& R & 1 \\
+	333 \div 2 = 166 	&& R & 1 \\
+	166 \div 2 = 83 	&& R & 0 \\
+	83  \div 2 = 41 	&& R & 1 \\
+	41	\div 41 = 20 	&& R & 1 \\
+	20 \div 2 = 10 		&& R & 0 \\
+	10 \div 2 = 5 		&& R & 0 \\
+	5 \div 2 = 2 		&& R & 1 \\
+	2 \div 2 = 1 		&& R & 0 \\
+	1 \div 2 = 0		&& R & 1
 \end{align*}
 
-$667 \div 2$ has a remainder of 1 because it is odd, so write this to the right of the division (R 1), and write the result, $333$ below as the dividend of the new operation. Repeat this step. $333 \div 2$ also has a remainder of 1, and its result is 166. $166$ is even and has a remainder of 0. And so on until we reach $2 \div 1$.To obtain the answer read from the top down. The bottom digit is the LSB and the top digit is the MSB. The result is $1101100101_2$ which is consistent with our previous examples.
+$667 \div 2$ has a remainder of 1 because it is odd, so write this to the right of the division (R 1), and write the result, 
+$333$ below as the dividend of the new operation. Repeat this step. $333 \div 2$ also has a remainder of 1, and its result is 
+166. $166$ is even and has a remainder of 0. And so on until we reach $2 \div 1$.To obtain the answer read from the top down. 
+The bottom digit is the LSB and the top digit is the MSB. The result is $1101100101_2$ which is consistent with our previous 
+examples.
+
+\begin{figure}[t]
+    \example{Convert $1_{10}$ to binary. % 
+    \begin{align*}
+        1 \div 2 = 0 && R & 1 
+    \end{align*}
+    Note that this is a base case of the algorithm. A result of zero means stop. The value 1 is the same in binary as it is %
+    in decimal.}
+\end{figure}
+
+\begin{figure}[t]
+    \example{Convert $1025_{10}$ to binary. % 
+    \begin{align*}
+        1025 \div 2 = 512 && R & 1 \\
+        512 \div 2 = 256 && R & 0 \\
+        256 \div 2 = 128 && R & 0 \\
+        128 \div 2 = 64 && R & 0 \\
+        64 \div 2 = 32 && R & 0 \\
+        32 \div 2 = 16 && R & 0 \\
+        32 \div 2 = 16 && R & 0 \\
+        16 \div 2 = 8 && R & 0 \\
+        8 \div 2 = 4 && R & 0 \\
+        4 \div 2 = 2 && R & 0 \\
+        2 \div 2 = 1 && R & 0 \\
+        1 \div 2 = 0 && R & 1 
+    \end{align*}
+    $1025_{10}$ is equal to $100000000001_2$. Notice that $1\div2$ is consistently the termination condition with \gls{base-2}. It is a common mistake to stop prematurely at $2\div2$.}
+\end{figure}
+
 
 \section{Generalized Number Bases\label{sec:numbers:bases}}
 
@@ -166,11 +205,26 @@ by summing up powers of $b$:
     m = \sum_{i=0}^{n-1} a_i \times b^i
 \end{equation}
 %
-Furthermore the divide-by-2 algorithm can be generalized as a divide-by-$n$ algorithm if you divide by $n$ rather than 2.
+Furthermore the divide-by-2 algorithm can be generalized as a divide-by-$b$ algorithm if you divide by the base $b$ rather than 2.
 
-\begin{figure}[h]
-    \example{How many donuts are in a box of twelve dozen donuts? \textit{Assuming that one means
-    that there are $12_{12}$ donuts and not being redundant or $12 \times 12$ donuts.} %
+\begin{figure}[t]
+    \example{Convert $1234_{10}$ to base-3. % 
+    \begin{align*}
+        1234 \div 3 = 411 && R & 1 \\
+        411 \div 3 = 137 && R & 0 \\
+        137 \div 3 = 45 && R & 2 \\
+        45 \div 3 = 15 && R & 0 \\
+        15 \div 3 = 5 && R & 0 \\
+        5 \div 3 = 1 && R & 2 \\
+        1 \div 3 = 0 && R & 1
+    \end{align*}
+    $1234_{10}$ is equal to $1200201_3$. Base-3 is not a commonly used base and this is a contrived exampled to demonstrate that 
+    the \gls{divide-by-2} algorithm works for any arbitrary number base.}
+\end{figure}
+
+\begin{figure}[t]
+    \example{How many donuts are in a box of twelve dozen donuts? Assuming that one means
+    that there are $12_{12}$ donuts and not being redundant or $12 \times 12$ donuts. %
     \begin{align*} %
         m & = \sum_{i=0}^{n-1} a_i \times 12^i \\
         m & = 1 \times 12^1 + 2 \times 12^0  \\
@@ -180,7 +234,7 @@ Furthermore the divide-by-2 algorithm can be generalized as a divide-by-$n$ algo
     }
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[t]
     \example{Convert the tally marks llll to decimal using Equation \ref{eq:basen}. %
     Unary numbering systems can be thought of as base-1.
     \begin{align*} %
@@ -188,7 +242,7 @@ Furthermore the divide-by-2 algorithm can be generalized as a divide-by-$n$ algo
         m & = 1 \times 1^3 + 1 \times 1^2 + 1 \times 1^1 + 1 \times 1^0  \\
         m & = 1 + 1 + 1 + 1 = 4 \\
     \end{align*}%
-    There are $14_{10}$ donuts in a box of $12_{12}$ donuts. 
+    1 taken to any power remains 1. 
     }
 \end{figure}
 
@@ -205,11 +259,11 @@ as $111_2 = 7_{8}$.  Allowing none would be the deassertion of all bits or $0$.
 There are a maximum of 8 combinations (remember to include 0), thus it is a 
 \gls{base-8} system. In practice it is called an octet. This system is not used for arithmetic. Rather,
 the number is used as a category to indicate the permissions for a class. Each binary digit encodes 
-the permissions in the order given above (read, write and execute). Because there are three classes, 
+the permissions in the order given above ($rwx$). Because there are three classes, 
 Unit-like permissions are given with three octets. For example, $777_8$ allows all permissions 
 for all user classes.
 
-\begin{figure}[h]
+\begin{figure}[t]
     \example{Serving files for the Internet requires special permissions. The user should be allowed read %
     and write files, but group and others should only be allowed to read files. For folders, the user should %
     be allowed all permissions. But, group and others should only be allowed to execute the folder. Give %
@@ -225,7 +279,7 @@ for all user classes.
     }
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[t]
     \example{In binary, the octet of permissions for a Unix file is $111111100_2$. What can each group %
     do with this file? The first octet or three bits are the user permissions. $111_2 = 7_8$, so the user %
     who owns the file can do anything with it--similarly for the group. However, the last three bits are %
@@ -237,20 +291,50 @@ for all user classes.
 
 
 The hexadecimal (also \gls{base-16} or simply hex) numeral system is a positional numeral system that 
-represents numbers using a base of 16. Unlike the decimal system representing numbers using 10 symbols, hexadecimal uses 16 distinct symbols, most often the symbols 0-9 to represent values 0-9, and A-F to 
+represents numbers using a base of 16. Unlike the decimal system representing numbers using 10 symbols, 
+hexadecimal uses 16 distinct symbols, most often the symbols 0-9 to represent values 0-9, and A-F to 
 represent values from 10 to 15. 
 
 \Gls{base-16} was used in the early 20th century as traditional units of weight in China. %
 Currently, software developers and system designers widely use hexadecimal numbers because they provide a human-
-friendly representation of binary-coded values. Each hexadecimal digit `represents four bits (binary digits), 
+friendly representation of binary-coded values. Each hexadecimal digit represents four bits (binary digits), 
 also known as a \gls{nibble}. For example, a 4-bit nibble can have values ranging from 0000 to 1111 in 
-binary form, which can be conveniently represented as 0 to F in hexadecimal.
+binary form, which can be conveniently represented as 0 to F in hexadecimal. 
+
+
+It is possible for you to convert from decimal to \gls{base-16} using the \gls{divide-by-2} algorithm. 
+As a developer you will not often be converting decimal to hexadecimal. Instead, you will use 
+hexadecimal to abbreviate long texts of binary. There is no need to convert from binary to decimal 
+then from decimal to hexadcimal using \gls{base-16}. Due to some unique property of the positional
+numbering system, binary numbers can be converted to hexadecimal by table lookup (see Table \ref{tab:hex}). 
+
+\begin{table}[t]\centering
+    \caption{Table for converting between binary and hexadecimal.\label{tab:hex}}
+    \begin{tabular}{|l|l|}\hline 
+        Binary & Hexadecimal \\\hline\hline  
+        0000 & 0 \\\hline 
+        0001 & 1\\\hline 
+        0010 & 2\\\hline 
+        0011 & 3\\\hline 
+        0100 & 4\\\hline 
+        0101 & 5\\\hline 
+        0110 & 6\\\hline 
+        0111 & 7\\\hline 
+        1000 & 8\\\hline 
+        1001 & 9\\\hline 
+        1010 & A\\\hline 
+        1011 & B \\\hline 
+        1100 & C\\\hline 
+        1101 & D\\\hline 
+        1110 & E \\\hline 
+        1111 & F\\\hline 
+    \end{tabular}
+\end{table}
 
 As discussed, a subscript is typically used to specify the base. For example, the decimal value $54,076_{10}$
 would be expressed in hexadecimal as $D33C16_{16}$. In programming, a number of notations are used to denote
 hexadecimal numbers, usually involving a prefix. The prefix \texttt{0x} is used in C language, which would 
-denote this value as \texttt{0xD33C}.
-
+denote this value as \texttt{0xD33C}. 
 
 \vfill\clearpage
 \section*{Homework Questions}
@@ -258,22 +342,25 @@ denote this value as \texttt{0xD33C}.
 \small
 \begin{multicols*}{2}
    \begin{enumerate}[label=\thechapter.\arabic*]
-    \item Conduct a search on the historical basis for binary numbers before they were used in %
+    \item Conduct a literature search on the following individuals and describe their contributions to decimal and/or binary numbers.
+        \begin{enumerate}
+            \item \gls{aryabhata}
+            \item \gls{brahmagupta}
+            \item \gls{abulhasan}
+            \item \gls{sindibnali}
+            \item Thomas Harriot
+            \item Gottfried Leibniz
+        \end{enumerate}
+    \item Conduct a literature search on the historical basis for binary numbers before they were used in %
     computing and explain how they were used by society.
+    \item Conduct a literature search on \gls{iching} and draw parallels to its concepts and \gls{base-2}.
     \item Explain in your own words the following concepts:
     \begin{enumerate}
         \item Most significant bit
         \item Least significant bit
-        \item The largest unsigned number that can be stored in $n$ bits.
     \end{enumerate}
-    \item Define the divide-by-2 method in pseudo-code.
-    \item What is the largest unsigned number that can be stored in the following data types?
-    \begin{enumerate}
-        \item \texttt{char}
-        \item 2-byte \texttt{int}
-        \item 48-bit integer
-    \end{enumerate}
-    \item Convert the following decimal numbers to binary:
+    \item Calculate the first 20 powers of 2.
+    \item Convert the following decimal numbers to binary using a table.
     \begin{multicols*}{2}
         \begin{enumerate}
             \item 0
@@ -284,6 +371,20 @@ denote this value as \texttt{0xD33C}.
             \item 1200
             \item 1092
             \item 1000000
+        \end{enumerate}
+    \end{multicols*}
+    \item Define the divide-by-2 method in pseudo-code.
+    \item Convert the following decimal numbers to binary using \gls{divide-by-2}.
+    \begin{multicols*}{2}
+        \begin{enumerate}
+            \item 7
+            \item 2
+            \item 89
+            \item 47
+            \item 242
+            \item 574
+            \item 1655
+            \item 6757
         \end{enumerate}
     \end{multicols*}
     \item Convert the following binary numbers to decimal using the table method:\label{hw:tablemethod}
