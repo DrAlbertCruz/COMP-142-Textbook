@@ -186,7 +186,6 @@ examples.
     $1025_{10}$ is equal to $100000000001_2$. Notice that $1\div2$ is consistently the termination condition with \gls{base-2}. It is a common mistake to stop prematurely at $2\div2$.}
 \end{figure}
 
-
 \section{Generalized Number Bases\label{sec:numbers:bases}}
 
 \Gls{base-10} and \gls{base-2} are not the only number bases. The base of a number can be any 
@@ -308,7 +307,7 @@ hexadecimal to abbreviate long texts of binary. There is no need to convert from
 then from decimal to hexadcimal using \gls{base-16}. Due to some unique property of the positional
 numbering system, binary numbers can be converted to hexadecimal by table lookup (see Table \ref{tab:hex}). 
 
-\begin{table}[t]\centering
+\begin{table}[b]\centering
     \caption{Table for converting between binary and hexadecimal.\label{tab:hex}}
     \begin{tabular}{|l|l|}\hline 
         Binary & Hexadecimal \\\hline\hline  
@@ -331,10 +330,58 @@ numbering system, binary numbers can be converted to hexadecimal by table lookup
     \end{tabular}
 \end{table}
 
-As discussed, a subscript is typically used to specify the base. For example, the decimal value $54,076_{10}$
+In mathematical contexts, a subscript is used to specify the base. For example, the decimal value $54,076_{10}$
 would be expressed in hexadecimal as $D33C16_{16}$. In programming, a number of notations are used to denote
 hexadecimal numbers, usually involving a prefix. The prefix \texttt{0x} is used in C language, which would 
 denote this value as \texttt{0xD33C}. 
+
+\section{Arithmetic in Varying Number Bases\label{sec:numbers:binarith}}
+
+Carry arithmetic in decimal extends to any positional numbering system, including . Recall that 
+in carry arithmetic, the \gls{lsb} is aligned on the right, and you add single digit numbers 
+digit by digit. If the result is greater than one digit, the second digit is carried as a third 
+operand for the subsequent single-digit-addition operation. For example, $123_{10} + 459_{10}$:
+
+\vspace{1em}
+\begin{tabular}{llll}
+      &   & 1 &   \\
+      & 1 & 2 & 3 \\
+    + & 4 & 5 & 9 \\\hline
+      & 5 & 8 & 2
+\end{tabular}
+\vspace{1em}
+
+With the \gls{lsb}, $3+9=12$, and the $1$ is carried into the $2+5$ operation. This same algorithm 
+can be used in binary. For example, $101_2 + 111_2$:
+
+\vspace{1em}
+\begin{tabular}{llll}
+      & 1  & 1  &   \\
+      & 1 & 0 & 1 \\
+    + & 1 & 1 & 1 \\\hline
+     1 & 1 & 0 & 0
+\end{tabular}
+\vspace{1em}
+
+Note that in binary $1_2 + 1_2 = 10_2$, resulting in a carry-out. A similar carry out occurs with, 
+$1_2 + 1_2 + 1_2 = 11_2$. You can even apply this logic to hexadecimal numbers. Consider 
+$1AD_{16} + 20_{16}$. 
+
+\vspace{1em}
+\begin{tabular}{llll}
+      &   &   &   \\
+      & 1 & A & D \\
+    + &   & 2 & 0 \\\hline
+      & 1 & C & D
+\end{tabular}
+\vspace{1em}
+
+This particular example did not involve any carry outs. When adding $A_{16} + 2_{16}$ it may 
+be helpful to think of the numbers in decimal to determine which hexadecimal symbol results 
+and if a carry out needs to occur (if the result is greater than 16). $A_{16}$ corresponds to 
+$10_{10}$ so $10_{10}+2_{10}=12_{10}$. The symbol for 12 in hexadecimal is the letter C. An even 
+quicker way is to note that an addition of two should increment the digit by two, and C 
+is two letters after A. 
 
 \vfill\clearpage
 \section*{Homework Questions}
@@ -354,12 +401,18 @@ denote this value as \texttt{0xD33C}.
     \item Conduct a literature search on the historical basis for binary numbers before they were used in %
     computing and explain how they were used by society.
     \item Conduct a literature search on \gls{iching} and draw parallels to its concepts and \gls{base-2}.
+    \item Conduct a literature search on why hexadecimal and binary number conversions can be done using a table while other common number bases cannot. 
+    \item Conduct a literature search on the historical basis of base-60. How does it compare to a modern base-10 system?
     \item Explain in your own words the following concepts:
     \begin{enumerate}
         \item Most significant bit
         \item Least significant bit
+        \item Positional notation 
+        \item Zero 
+        \item Tally marks
     \end{enumerate}
     \item Calculate the first 20 powers of 2.
+    \item Write out the binary to hexadecimal conversion table. 
     \item Convert the following decimal numbers to binary using a table.
     \begin{multicols*}{2}
         \begin{enumerate}
@@ -373,7 +426,7 @@ denote this value as \texttt{0xD33C}.
             \item 1000000
         \end{enumerate}
     \end{multicols*}
-    \item Define the divide-by-2 method in pseudo-code.
+    \item Define the Divide-by-2 method in pseudo-code.
     \item Convert the following decimal numbers to binary using \gls{divide-by-2}.
     \begin{multicols*}{2}
         \begin{enumerate}
@@ -398,6 +451,24 @@ denote this value as \texttt{0xD33C}.
         \item 1000000000
         \item 1000100101
     \end{enumerate}
-    \item Repeat Question \ref{hw:tablemethod} using the divide-by-2 method. 
+    \item \label{dividebyn} Convert the following numbers to base-5 using the Divide-by-5 method.
+    \begin{multicols*}{2}
+        \begin{enumerate}
+            \item 8
+            \item 6
+            \item 651
+            \item 470
+            \item 7927
+            \item 4674
+            \item 18788
+            \item 10328
+        \end{enumerate}
+    \end{multicols*}
+    \item Repeat Problem \ref{dividebyn} the base of your favorite number greater than 20.
+    \item Repeat Problem \ref{dividebyn} in base-128.
+    \item Repeat Question \ref{hw:tablemethod} using the divide-by-2 method.
+    \item Write a command-line program to convert a decimal number to an arbitrary number base.
+    \item Write a command-line program to display the time in \gls{base-10} for the hour and minute. This implies that both the hours and number of minutes is out of 10 maximum rather 
+    than a positional notation, and may require a fractional output. 
    \end{enumerate} 
 \end{multicols*}

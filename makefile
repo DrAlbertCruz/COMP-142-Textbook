@@ -1,7 +1,7 @@
 MAKER=xelatex
 FLAGS=-halt-on-error
 
-main.pdf: main.tex
+main.pdf: main.tex number-bases.tex data-rep.tex gloss.tex
 	${MAKER} ${FLAGS} main.tex
 	makeglossaries ${FLAGS} main
 	${MAKER} main.tex
